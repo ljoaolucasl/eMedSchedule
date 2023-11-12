@@ -1,12 +1,13 @@
 ﻿namespace eMedSchedule.Domain.Common
 {
     public interface IRepository<T>
+        where T : Entity
     {
-        List<T> RetrieveAll();
+        Task<List<T>> RetrieveAllAsync();
 
-        T RetrieveByID(int id);
+        Task<T> RetrieveByIDAsync(Guid id);
 
-        void Add(T objectToAdd);
+        Task AddAsync(T objectToAdd);
 
         void Update(T objectToUpdate);
 

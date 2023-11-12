@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace eMedSchedule.Domain.DoctorActivityModule
 {
-    public class DoctorActivity
+    public class DoctorActivity : Entity
     {
         public string Title { get; set; }
         public List<Doctor> Doctors { get; set; }

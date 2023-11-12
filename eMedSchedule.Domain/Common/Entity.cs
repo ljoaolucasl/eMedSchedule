@@ -2,7 +2,7 @@
 
 namespace eMedSchedule.Domain.Common
 {
-    public class Entity
+    public class Entity : IEntity
     {
         public Guid Id { get; set; }
 

@@ -1,0 +1,1 @@
+﻿global using eMedSchedule.Domain.Common;
