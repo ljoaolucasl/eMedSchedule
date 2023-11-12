@@ -9,10 +9,10 @@
         {
         }
 
-        public Doctor(string name, string cRM)
+        public Doctor(string name, string crm)
         {
             Name = name;
-            CRM = cRM;
+            CRM = crm;
         }
 
         public override bool Equals(object? obj)
