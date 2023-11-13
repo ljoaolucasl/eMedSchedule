@@ -1,3 +1,5 @@
+using Serilog;
+
 namespace eMedSchedule.WebApi
 {
     public class Program
@@ -6,14 +8,28 @@ namespace eMedSchedule.WebApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            builder.Logging.ClearProviders();
+            builder.Services.AddSerilog(Log.Logger);
+
+            builder.Services.ConfigureControllers();
+
+            builder.Services.ConfigureDependencyInjection(builder.Configuration);
+            builder.Services.ConfigureAutoMapper();
+            builder.Services.ConfigureSwagger();
 
             var app = builder.Build();
+
+            app.UseMiddleware<ManipulatorExceptions>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -25,7 +41,6 @@ namespace eMedSchedule.WebApi
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

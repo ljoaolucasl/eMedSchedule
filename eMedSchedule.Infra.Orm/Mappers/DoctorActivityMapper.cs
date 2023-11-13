@@ -18,7 +18,7 @@ namespace eMedSchedule.Infra.Orm.Mappers
             builder.Property(d => d.RecoveryTime).HasColumnType("bigint").IsRequired();
 
             builder.HasMany(d => d.Doctors)
-                .WithMany()
+                .WithMany(c => c.Activities)
                 .UsingEntity(x => x.ToTable("FK_TBDoctorActivity_TBDoctor"));
         }
     }

@@ -7,17 +7,20 @@ namespace eMedSchedule.Domain.DoctorActivityModule
     {
         public string Title { get; set; }
         public List<Doctor> Doctors { get; set; }
-        public ActivityType ActivityType { get; set; }
+        public ActivityTypeEnum ActivityType { get; set; }
         public DateTime Date { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
-        public TimeSpan RecoveryTime => ActivityType == ActivityType.Appointment ? TimeSpan.FromMinutes(20) : TimeSpan.FromHours(4);
+
+        public TimeSpan RecoveryTime => ActivityType == ActivityTypeEnum.Appointment ?
+            TimeSpan.FromMinutes(20) : TimeSpan.FromHours(4);
 
         public DoctorActivity()
         {
         }
 
-        public DoctorActivity(string title, List<Doctor> doctors, ActivityType activityType, DateTime date, TimeSpan startTime, TimeSpan endTime)
+        public DoctorActivity(string title, List<Doctor> doctors, ActivityTypeEnum activityType,
+            DateTime date, TimeSpan startTime, TimeSpan endTime)
         {
             Title = title;
             Doctors = doctors;
@@ -41,7 +44,7 @@ namespace eMedSchedule.Domain.DoctorActivityModule
         }
     }
 
-    public enum ActivityType
+    public enum ActivityTypeEnum
     {
         [Description("Appointment")]
         Appointment,

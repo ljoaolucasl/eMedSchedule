@@ -14,9 +14,12 @@ namespace eMedSchedule.Domain.DoctorModule
                 .NotEmpty();
 
             RuleFor(d => d.CRM)
-            .NotEmpty()
-            .NotNull()
-            .Must(ValidateCRM).WithMessage("'Invalid 'CRM'.");
+                .NotEmpty()
+                .NotNull()
+                .Must(ValidateCRM).WithMessage("'Invalid 'CRM'.");
+
+            RuleFor(a => a.ProfilePicture)
+                .Custom(ValidateFileSize);
         }
 
         private void ValidateInvalidCharacter(string name, ValidationContext<Doctor> context)
@@ -36,6 +39,17 @@ namespace eMedSchedule.Domain.DoctorModule
             Regex crmRegex = new(@"^\d{5}-[A-Za-z]{2}$");
 
             return crmRegex.IsMatch(crm);
+        }
+
+        private void ValidateFileSize(byte[] profilePicture, ValidationContext<Doctor> context)
+        {
+            if (profilePicture == null || profilePicture.Length == 0)
+                return;
+
+            const int max2Mb = 2 * 1024 * 1024;
+
+            if (profilePicture.Length >= max2Mb)
+                context.AddFailure("'Image' must be a maximum of 2 MB.");
         }
     }
 }

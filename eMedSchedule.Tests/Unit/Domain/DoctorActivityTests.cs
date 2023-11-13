@@ -15,7 +15,8 @@ namespace eMedSchedule.Tests.Unit.Domain
         public void Setup()
         {
             _validator = new DoctorActivityValidator();
-            _doctorActivity = new("Title", new List<Doctor>() { new Doctor("Carlos", "84526-SC") }, ActivityType.Appointment, new DateTime(2020, 10, 10), new TimeSpan(10, 0, 0), new TimeSpan(11, 0, 0));
+            _doctorActivity = new("Title", new List<Doctor>() { new Doctor("Carlos", "84526-SC") }, ActivityTypeEnum.Appointment,
+                new DateTime(2020, 10, 10), new TimeSpan(10, 0, 0), new TimeSpan(11, 0, 0));
         }
 
         [TestMethod]
@@ -99,7 +100,7 @@ namespace eMedSchedule.Tests.Unit.Domain
         [TestMethod]
         public void Doctor_Activity_Validate_Should_Return_False_When_Doctor_Activity_Activity_Type_Is_Not_A_Valid_Enum()
         {
-            _doctorActivity.ActivityType = (ActivityType)10;
+            _doctorActivity.ActivityType = (ActivityTypeEnum)10;
 
             ValidationResult result = _validator.Validate(_doctorActivity);
 
@@ -155,7 +156,7 @@ namespace eMedSchedule.Tests.Unit.Domain
         [TestMethod]
         public void Doctor_Activity_Recovery_Time_Should_Return_20_Minutes_When_Doctor_Activity_Activity_Tupe_Is_Appointment()
         {
-            _doctorActivity.ActivityType = ActivityType.Appointment;
+            _doctorActivity.ActivityType = ActivityTypeEnum.Appointment;
 
             TimeSpan expectedRecoveryTime = TimeSpan.FromMinutes(20);
 
@@ -165,7 +166,7 @@ namespace eMedSchedule.Tests.Unit.Domain
         [TestMethod]
         public void Doctor_Activity_Recovery_Time_Should_Return_4_Hours_When_Doctor_Activity_Activity_Tupe_Is_Surgery()
         {
-            _doctorActivity.ActivityType = ActivityType.Surgery;
+            _doctorActivity.ActivityType = ActivityTypeEnum.Surgery;
 
             TimeSpan expectedRecoveryTime = TimeSpan.FromHours(4);
 

@@ -23,7 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\eMedSchedule.Application\eMedSchedule.Application.csproj" />
     <ProjectReference Include="..\eMedSchedule.Domain\eMedSchedule.Domain.csproj" />
+    <ProjectReference Include="..\eMedSchedule.Infra.Orm\eMedSchedule.Infra.Orm.csproj" />
   </ItemGroup>
 
 </Project>

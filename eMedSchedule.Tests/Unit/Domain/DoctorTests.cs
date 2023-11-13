@@ -14,7 +14,7 @@ namespace eMedSchedule.Tests.Unit.Domain
         public void Setup()
         {
             _validator = new DoctorValidator();
-            _doctor = new("Carlos", "84526-SC");
+            _doctor = new("Carlos", "84526-SC", new byte[12]);
         }
 
         [TestMethod]
@@ -102,5 +102,33 @@ namespace eMedSchedule.Tests.Unit.Domain
         }
 
         #endregion CRM
+
+        #region ProfilePicture
+
+        [TestMethod]
+        public void Doctor_Validate_Should_Return_False_When_Doctor_Profile_Picture_Is_Larger_Than_2_Mb()
+        {
+            int bytesSize = 2 * 1024 * 1024 + 1;
+            byte[] size = new byte[bytesSize];
+            new Random().NextBytes(size);
+
+            _doctor.ProfilePicture = size;
+
+            ValidationResult result = _validator.Validate(_doctor);
+
+            result.IsValid.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Doctor_Validate_Should_Return_True_When_Doctor_Profile_Picture_Is_Null()
+        {
+            _doctor.ProfilePicture = null;
+
+            ValidationResult result = _validator.Validate(_doctor);
+
+            result.IsValid.Should().BeFalse();
+        }
+
+        #endregion ProfilePicture
     }
 }
