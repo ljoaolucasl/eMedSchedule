@@ -1,15 +1,18 @@
-﻿namespace eMedSchedule.Domain.Common
+﻿using eMedSchedule.Domain.DoctorModule;
+using FluentResults;
+
+namespace eMedSchedule.Domain.Common
 {
     public interface IService<T>
     {
-        List<T> RetrieveAll();
+        Task<Result<List<T>>> RetrieveAllAsync();
 
-        T RetrieveByID(int id);
+        Task<Result<T>> RetrieveByIDAsync(Guid id);
 
-        void Add(T objectToAdd);
+        Task<Result<T>> AddAsync(T objectToAdd);
 
-        void Update(T objectToUpdate);
+        Task<Result<T>> UpdateAsync(T objectToUpdate);
 
-        void Delete(T objectToDelete);
+        Task<Result> DeleteAsync(T objectToDelete);
     }
 }

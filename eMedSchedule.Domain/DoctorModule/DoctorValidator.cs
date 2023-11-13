@@ -10,7 +10,8 @@ namespace eMedSchedule.Domain.DoctorModule
             RuleFor(d => d.Name)
                 .MinimumLength(3).WithMessage(@"'Name' must be greater than or equal to 3 characters.")
                 .Custom(ValidateInvalidCharacter)
-                .NotEmpty();
+                .NotEmpty()
+                .NotNull();
 
             RuleFor(d => d.CRM)
             .NotEmpty()

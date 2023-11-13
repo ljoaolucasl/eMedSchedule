@@ -7,8 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DoctorActivityModule\" />
-    <Folder Include="DoctorModule\" />
+    <PackageReference Include="FluentResults" Version="3.15.2" />
+    <PackageReference Include="FluentValidation" Version="11.8.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\eMedSchedule.Domain\eMedSchedule.Domain.csproj" />
+    <ProjectReference Include="..\eMedSchedule.Infra.Orm\eMedSchedule.Infra.Orm.csproj" />
   </ItemGroup>
 
 </Project>

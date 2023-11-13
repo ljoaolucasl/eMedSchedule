@@ -8,19 +8,21 @@ namespace eMedSchedule.Domain.DoctorActivityModule
         public string Title { get; set; }
         public List<Doctor> Doctors { get; set; }
         public ActivityType ActivityType { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime Date { get; set; }
+        public TimeSpan StartTime { get; set; }
+        public TimeSpan EndTime { get; set; }
         public TimeSpan RecoveryTime => ActivityType == ActivityType.Appointment ? TimeSpan.FromMinutes(20) : TimeSpan.FromHours(4);
 
         public DoctorActivity()
         {
         }
 
-        public DoctorActivity(string title, List<Doctor> doctors, ActivityType activityType, DateTime startTime, DateTime endTime)
+        public DoctorActivity(string title, List<Doctor> doctors, ActivityType activityType, DateTime date, TimeSpan startTime, TimeSpan endTime)
         {
             Title = title;
             Doctors = doctors;
             ActivityType = activityType;
+            Date = date;
             StartTime = startTime;
             EndTime = endTime;
         }
@@ -28,11 +30,13 @@ namespace eMedSchedule.Domain.DoctorActivityModule
         public override bool Equals(object? obj)
         {
             return obj is DoctorActivity activity &&
+                   Id.Equals(activity.Id) &&
                    Title == activity.Title &&
                    EqualityComparer<List<Doctor>>.Default.Equals(Doctors, activity.Doctors) &&
                    ActivityType == activity.ActivityType &&
-                   StartTime == activity.StartTime &&
-                   EndTime == activity.EndTime &&
+                   Date == activity.Date &&
+                   StartTime.Equals(activity.StartTime) &&
+                   EndTime.Equals(activity.EndTime) &&
                    RecoveryTime.Equals(activity.RecoveryTime);
         }
     }

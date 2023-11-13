@@ -10,9 +10,9 @@ namespace eMedSchedule.Infra.Orm.Common
         {
         }
 
-        public void SaveData()
+        public async Task SaveDataAsync()
         {
-            SaveChanges();
+            await SaveChangesAsync();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -2,6 +2,6 @@
 {
     public interface IPersistenceContext
     {
-        void SaveData();
+        Task SaveDataAsync();
     }
 }

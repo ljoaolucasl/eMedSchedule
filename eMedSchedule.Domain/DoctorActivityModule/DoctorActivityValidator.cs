@@ -10,14 +10,20 @@ namespace eMedSchedule.Domain.DoctorActivityModule
             RuleFor(dA => dA.Title)
                 .MinimumLength(3).WithMessage(@"'Title' must be greater than or equal to 3 characters.")
                 .Custom(ValidateInvalidCharacter)
-                .NotEmpty();
+                .NotEmpty().WithMessage("'Title' cannot be empty.")
+                .NotNull().WithMessage("'Title' is required.");
 
             RuleFor(dA => dA.Doctors)
-                .NotNull().WithMessage("'Doctor' is required.");
+                .Must(d => d.Count > 0).WithMessage("'Doctor' is required.")
+                .NotEmpty().WithMessage("'Doctors' cannot be empty.")
+                .NotNull().WithMessage("'Doctors' is required.");
 
             RuleFor(dA => dA.ActivityType)
-                .NotEmpty().WithMessage("'Activity' cannot be empty.")
+                .NotNull().WithMessage("'Activity' is required.")
                 .IsInEnum().WithMessage("'Invalid 'Activity'.");
+
+            RuleFor(dA => dA.Date)
+                .NotNull().WithMessage("'Date' is required.");
 
             RuleFor(dA => dA.StartTime)
                 .LessThan(a => a.EndTime).WithMessage("'Start Time' must be less than the 'End Time'.");
