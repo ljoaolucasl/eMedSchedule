@@ -8,13 +8,14 @@ namespace eMedSchedule.Domain.DoctorModule
         public DoctorValidator()
         {
             RuleFor(d => d.Name)
+                .NotNull()
                 .MinimumLength(3).WithMessage(@"'Name' must be greater than or equal to 3 characters.")
                 .Custom(ValidateInvalidCharacter)
-                .NotEmpty()
-                .NotNull();
+                .NotEmpty();
 
             RuleFor(d => d.CRM)
             .NotEmpty()
+            .NotNull()
             .Must(ValidateCRM).WithMessage("'Invalid 'CRM'.");
         }
 
@@ -29,6 +30,9 @@ namespace eMedSchedule.Domain.DoctorModule
 
         private bool ValidateCRM(string crm)
         {
+            if (string.IsNullOrWhiteSpace(crm))
+                return false;
+
             Regex crmRegex = new(@"^\d{5}-[A-Za-z]{2}$");
 
             return crmRegex.IsMatch(crm);

@@ -4,6 +4,7 @@ using FluentValidation.Results;
 
 namespace eMedSchedule.Tests.Unit.Domain
 {
+    [TestClass]
     public class DoctorTests
     {
         private DoctorValidator _validator;

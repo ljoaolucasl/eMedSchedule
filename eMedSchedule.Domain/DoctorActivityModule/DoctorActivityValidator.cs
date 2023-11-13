@@ -8,15 +8,14 @@ namespace eMedSchedule.Domain.DoctorActivityModule
         public DoctorActivityValidator()
         {
             RuleFor(dA => dA.Title)
+                .NotNull().WithMessage("'Title' is required.")
                 .MinimumLength(3).WithMessage(@"'Title' must be greater than or equal to 3 characters.")
                 .Custom(ValidateInvalidCharacter)
-                .NotEmpty().WithMessage("'Title' cannot be empty.")
-                .NotNull().WithMessage("'Title' is required.");
+                .NotEmpty().WithMessage("'Title' cannot be empty.");
 
             RuleFor(dA => dA.Doctors)
-                .Must(d => d.Count > 0).WithMessage("'Doctor' is required.")
-                .NotEmpty().WithMessage("'Doctors' cannot be empty.")
-                .NotNull().WithMessage("'Doctors' is required.");
+                .Must(d => d != null && d.Count > 0).WithMessage("'Doctor' is required.")
+                .NotEmpty().WithMessage("'Doctors' cannot be empty.");
 
             RuleFor(dA => dA.ActivityType)
                 .NotNull().WithMessage("'Activity' is required.")

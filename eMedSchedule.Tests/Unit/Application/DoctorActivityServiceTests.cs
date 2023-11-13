@@ -1,4 +1,4 @@
-﻿namespace eMedSchedule.Tests.Integration.Application
+﻿namespace eMedSchedule.Tests.Unit.Application
 {
     internal class DoctorActivityServiceTests
     {

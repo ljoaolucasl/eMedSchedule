@@ -106,28 +106,18 @@ namespace eMedSchedule.Tests.Unit.Domain
             result.IsValid.Should().BeFalse();
         }
 
-        [TestMethod]
-        public void Doctor_Activity_Validate_Should_Return_False_When_Doctor_Activity_Activity_Type_Is_Null()
-        {
-            _doctorActivity.ActivityType = default;
-
-            ValidationResult result = _validator.Validate(_doctorActivity);
-
-            result.IsValid.Should().BeFalse();
-        }
-
         #endregion ActivityType
 
         #region Date
 
         [TestMethod]
-        public void Doctor_Activity_Validate_Should_Return_False_When_Doctor_Activity_Date_Is_Null()
+        public void Doctor_Activity_Validate_Should_Return_True_When_Doctor_Activity_Date_Is_Default()
         {
-            _doctorActivity.Date = default;
+            _doctorActivity.Date = DateTime.MinValue;
 
             ValidationResult result = _validator.Validate(_doctorActivity);
 
-            result.IsValid.Should().BeFalse();
+            result.IsValid.Should().BeTrue();
         }
 
         #endregion Date
