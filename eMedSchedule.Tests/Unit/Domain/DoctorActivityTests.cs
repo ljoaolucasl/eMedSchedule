@@ -159,5 +159,29 @@ namespace eMedSchedule.Tests.Unit.Domain
         }
 
         #endregion EndTime
+
+        #region RecoveryTime
+
+        [TestMethod]
+        public void Doctor_Activity_Recovery_Time_Should_Return_20_Minutes_When_Doctor_Activity_Activity_Tupe_Is_Appointment()
+        {
+            _doctorActivity.ActivityType = ActivityType.Appointment;
+
+            TimeSpan expectedRecoveryTime = TimeSpan.FromMinutes(20);
+
+            _doctorActivity.RecoveryTime.Should().Be(expectedRecoveryTime);
+        }
+
+        [TestMethod]
+        public void Doctor_Activity_Recovery_Time_Should_Return_4_Hours_When_Doctor_Activity_Activity_Tupe_Is_Surgery()
+        {
+            _doctorActivity.ActivityType = ActivityType.Surgery;
+
+            TimeSpan expectedRecoveryTime = TimeSpan.FromHours(4);
+
+            _doctorActivity.RecoveryTime.Should().Be(expectedRecoveryTime);
+        }
+
+        #endregion RecoveryTime
     }
 }
