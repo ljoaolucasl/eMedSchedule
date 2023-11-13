@@ -14,6 +14,11 @@
     <PackageReference Include="FluentResults.Extensions.FluentAssertions" Version="2.1.1" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.13">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageReference Include="Moq" Version="4.20.69" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
@@ -26,6 +31,12 @@
     <ProjectReference Include="..\eMedSchedule.Application\eMedSchedule.Application.csproj" />
     <ProjectReference Include="..\eMedSchedule.Domain\eMedSchedule.Domain.csproj" />
     <ProjectReference Include="..\eMedSchedule.Infra.Orm\eMedSchedule.Infra.Orm.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

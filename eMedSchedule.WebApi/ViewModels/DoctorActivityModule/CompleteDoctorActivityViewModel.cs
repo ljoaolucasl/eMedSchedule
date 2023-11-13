@@ -13,8 +13,8 @@ namespace eMedSchedule.WebApi.ViewModels.DoctorActivityModule
         public string StartTime { get; set; }
         public string EndTime { get; set; }
 
-        public TimeSpan RecoveryTime => ActivityType == ActivityTypeEnum.Appointment ?
-            TimeSpan.FromMinutes(20) : TimeSpan.FromHours(4);
+        public string RecoveryTime => ActivityType == ActivityTypeEnum.Appointment ?
+            TimeSpan.FromMinutes(20).ToString(@"hh\:mm") : TimeSpan.FromHours(4).ToString(@"hh\:mm");
 
         public CompleteDoctorActivityViewModel()
         {

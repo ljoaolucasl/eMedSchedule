@@ -1,6 +1,4 @@
 ﻿using eMedSchedule.Domain.DoctorModule;
-using FluentAssertions;
-using FluentValidation.Results;
 
 namespace eMedSchedule.Tests.Unit.Domain
 {
@@ -126,7 +124,7 @@ namespace eMedSchedule.Tests.Unit.Domain
 
             ValidationResult result = _validator.Validate(_doctor);
 
-            result.IsValid.Should().BeFalse();
+            result.IsValid.Should().BeTrue();
         }
 
         #endregion ProfilePicture

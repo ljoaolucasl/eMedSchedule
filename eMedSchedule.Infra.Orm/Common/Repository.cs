@@ -21,27 +21,32 @@ namespace eMedSchedule.Infra.Orm.Common
 
         public async Task AddAsync(T objectToAdd)
         {
-            await DbContext.AddAsync(objectToAdd);
+            await Data.AddAsync(objectToAdd);
         }
 
         public void Update(T objectToUpdate)
         {
-            DbContext.Update(objectToUpdate);
+            Data.Update(objectToUpdate);
         }
 
         public void Delete(T objectToDelete)
         {
-            DbContext.Remove(objectToDelete);
+            Data.Remove(objectToDelete);
         }
 
-        public async Task<List<T>> RetrieveAllAsync()
+        public virtual async Task<List<T>> RetrieveAllAsync()
         {
             return await Data.ToListAsync();
         }
 
-        public async Task<T> RetrieveByIDAsync(Guid id)
+        public virtual async Task<T> RetrieveByIDAsync(Guid id)
         {
-            return await Data.FirstOrDefaultAsync(d => d.Id == id);
+            return await Data.SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public void AddTest(T objectToAdd)
+        {
+            Data.Add(objectToAdd);
         }
     }
 }

@@ -1,24 +1,25 @@
-﻿using eMedSchedule.Application.Common;
-using eMedSchedule.Domain.DoctorModule;
+﻿using eMedSchedule.Domain.DoctorModule;
 using eMedSchedule.Infra.Orm.Common;
 using Serilog;
 
 namespace eMedSchedule.Application.Services
 {
-    public class DoctorService : Service<Doctor, DoctorValidator>, IDoctorService
+    public class DoctorService : IDoctorService
     {
         private readonly IPersistenceContext _persistenceContext;
         private readonly IDoctorRepository _doctorRespository;
+        private readonly IDoctorValidator _doctorValidator;
 
-        public DoctorService(IPersistenceContext persistenceContext, IDoctorRepository doctorRespository)
+        public DoctorService(IPersistenceContext persistenceContext, IDoctorRepository doctorRespository, IDoctorValidator doctorValidator)
         {
             _persistenceContext = persistenceContext;
             _doctorRespository = doctorRespository;
+            _doctorValidator = doctorValidator;
         }
 
-        public override async Task<Result<Doctor>> AddAsync(Doctor doctorToAdd)
+        public async Task<Result<Doctor>> AddAsync(Doctor doctorToAdd)
         {
-            Result result = Validar(doctorToAdd);
+            Result result = ValidateService(doctorToAdd);
 
             if (result.IsFailed)
                 return Result.Fail(result.Errors);
@@ -30,9 +31,9 @@ namespace eMedSchedule.Application.Services
             return Result.Ok(doctorToAdd);
         }
 
-        public override async Task<Result<Doctor>> UpdateAsync(Doctor doctorToUpdate)
+        public async Task<Result<Doctor>> UpdateAsync(Doctor doctorToUpdate)
         {
-            var result = Validar(doctorToUpdate);
+            var result = ValidateService(doctorToUpdate);
 
             if (result.IsFailed)
                 return Result.Fail(result.Errors);
@@ -44,7 +45,7 @@ namespace eMedSchedule.Application.Services
             return Result.Ok(doctorToUpdate);
         }
 
-        public override async Task<Result> DeleteAsync(Doctor doctorToDelete)
+        public async Task<Result> DeleteAsync(Doctor doctorToDelete)
         {
             _doctorRespository.Delete(doctorToDelete);
 
@@ -53,14 +54,14 @@ namespace eMedSchedule.Application.Services
             return Result.Ok();
         }
 
-        public override async Task<Result<List<Doctor>>> RetrieveAllAsync()
+        public async Task<Result<List<Doctor>>> RetrieveAllAsync()
         {
             var doctors = await _doctorRespository.RetrieveAllAsync();
 
             return Result.Ok(doctors);
         }
 
-        public override async Task<Result<Doctor>> RetrieveByIDAsync(Guid id)
+        public async Task<Result<Doctor>> RetrieveByIDAsync(Guid id)
         {
             var doctor = await _doctorRespository.RetrieveByIDAsync(id);
 
@@ -72,6 +73,25 @@ namespace eMedSchedule.Application.Services
             }
 
             return Result.Ok(doctor);
+        }
+
+        public Result ValidateService(Doctor obj)
+        {
+            var resultValidation = _doctorValidator.Validate(obj);
+
+            var errors = new List<Error>();
+
+            foreach (var validationFailure in resultValidation.Errors)
+            {
+                Log.Logger.Warning(validationFailure.ErrorMessage);
+
+                errors.Add(new Error(validationFailure.ErrorMessage));
+            }
+
+            if (errors.Any())
+                return Result.Fail(errors);
+
+            return Result.Ok();
         }
     }
 }

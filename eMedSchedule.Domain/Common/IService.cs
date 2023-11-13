@@ -1,5 +1,4 @@
-﻿using eMedSchedule.Domain.DoctorModule;
-using FluentResults;
+﻿using FluentResults;
 
 namespace eMedSchedule.Domain.Common
 {
@@ -14,5 +13,7 @@ namespace eMedSchedule.Domain.Common
         Task<Result<T>> UpdateAsync(T objectToUpdate);
 
         Task<Result> DeleteAsync(T objectToDelete);
+
+        Result ValidateService(T objectToValidate);
     }
 }

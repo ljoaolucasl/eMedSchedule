@@ -15,7 +15,6 @@ namespace eMedSchedule.Infra.Orm.Mappers
             builder.Property(d => d.Date).IsRequired();
             builder.Property(d => d.StartTime).HasColumnType("bigint").IsRequired();
             builder.Property(d => d.EndTime).HasColumnType("bigint").IsRequired();
-            builder.Property(d => d.RecoveryTime).HasColumnType("bigint").IsRequired();
 
             builder.HasMany(d => d.Doctors)
                 .WithMany(c => c.Activities)

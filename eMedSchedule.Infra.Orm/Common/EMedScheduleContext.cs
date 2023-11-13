@@ -15,6 +15,11 @@ namespace eMedSchedule.Infra.Orm.Common
             await SaveChangesAsync();
         }
 
+        public void SaveData()
+        {
+            SaveChanges();
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var loggerFactory = LoggerFactory.Create(builder =>

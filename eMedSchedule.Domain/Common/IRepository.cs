@@ -12,5 +12,7 @@
         void Update(T objectToUpdate);
 
         void Delete(T objectToDelete);
+
+        void AddTest(T objectToAdd);
     }
 }

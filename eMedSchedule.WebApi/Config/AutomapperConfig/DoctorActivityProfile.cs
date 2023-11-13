@@ -8,7 +8,9 @@ namespace eMedSchedule.WebApi.Config.AutomapperConfig
     {
         public DoctorActivityProfile()
         {
-            CreateMap<FormsDoctorActivityViewModel, DoctorActivity>();
+            CreateMap<FormsDoctorActivityViewModel, DoctorActivity>()
+                .AfterMap<ConfigureDoctorMappingAction>();
+
             CreateMap<DoctorActivity, ListDoctorActivityViewModel>();
 
             CreateMap<DoctorActivity, FormsDoctorActivityViewModel>()
@@ -28,9 +30,9 @@ namespace eMedSchedule.WebApi.Config.AutomapperConfig
             _doctorRepository = doctorRepository;
         }
 
-        public async void Process(FormsDoctorActivityViewModel source, DoctorActivity destination, ResolutionContext context)
+        public void Process(FormsDoctorActivityViewModel source, DoctorActivity destination, ResolutionContext context)
         {
-            destination.Doctors = await _doctorRepository.RetrieveManyAsync(source.SelectedDoctors);
+            destination.Doctors = _doctorRepository.RetrieveMany(source.SelectedDoctors);
         }
     }
 }

@@ -5,6 +5,7 @@ using FizzWare.NBuilder;
 
 namespace eMedSchedule.Tests.Integration.Repositories
 {
+    [TestClass]
     public class DoctorRepositoryTests
     {
         private DoctorRepository _doctorRepository;
@@ -20,23 +21,25 @@ namespace eMedSchedule.Tests.Integration.Repositories
 
             _context.RemoveRange(_doctorRepository.Data);
 
-            BuilderSetup.SetCreatePersistenceMethod<Doctor>(_doctorRepository.AddAsync);
+            BuilderSetup.SetCreatePersistenceMethod<Doctor>(_doctorRepository.AddTest);
         }
 
         #region CrudDoctor
 
         [TestMethod]
-        public async void Doctor_Repository_Should_Insert_New_Doctor_On_DatabaseAsync()
+        public async Task Doctor_Repository_Should_Insert_New_Doctor_On_DatabaseAsync()
         {
             Doctor doctorToTest = Builder<Doctor>.CreateNew().Persist();
 
             await _context.SaveChangesAsync();
 
-            _doctorRepository.RetrieveByIDAsync(doctorToTest.Id).Should().Be(doctorToTest);
+            var doctorToTest2 = await _doctorRepository.RetrieveByIDAsync(doctorToTest.Id);
+
+            doctorToTest2.Should().Be(doctorToTest);
         }
 
         [TestMethod]
-        public async void Doctor_Repository_Should_Update_The_Doctor_In_The_Database()
+        public async Task Doctor_Repository_Should_Update_The_Doctor_In_The_Database()
         {
             var doctorToTest = Builder<Doctor>.CreateNew().Persist();
             _context.SaveChanges();
@@ -54,7 +57,7 @@ namespace eMedSchedule.Tests.Integration.Repositories
         }
 
         [TestMethod]
-        public async void Doctor_Repository_Should_Delete_The_Doctor_In_The_Database()
+        public async Task Doctor_Repository_Should_Delete_The_Doctor_In_The_Database()
         {
             var doctorToTest = Builder<Doctor>.CreateNew().Persist();
             await _context.SaveChangesAsync();
@@ -67,7 +70,7 @@ namespace eMedSchedule.Tests.Integration.Repositories
         }
 
         [TestMethod]
-        public async void Doctor_Repository_Should_Retrieve_The_Doctor_In_The_Database()
+        public async Task Doctor_Repository_Should_Retrieve_The_Doctor_In_The_Database()
         {
             var doctorToTest = Builder<Doctor>.CreateNew().Persist();
             await _context.SaveChangesAsync();
@@ -78,7 +81,7 @@ namespace eMedSchedule.Tests.Integration.Repositories
         }
 
         [TestMethod]
-        public async void Doctor_Repository_Should_Retrieve_Every_Doctors_In_The_Database()
+        public async Task Doctor_Repository_Should_Retrieve_Every_Doctors_In_The_Database()
         {
             var doctorToTest = Builder<Doctor>.CreateNew().Persist();
             await _context.SaveChangesAsync();
@@ -100,5 +103,28 @@ namespace eMedSchedule.Tests.Integration.Repositories
         }
 
         #endregion CrudDoctor
+
+        [TestMethod]
+        public async Task Doctor_Repository_Should_Retrieve_Many_Doctors_In_The_Database()
+        {
+            var doctorToTest = Builder<Doctor>.CreateNew().Persist();
+            await _context.SaveChangesAsync();
+
+            var doctorToTest2 = Builder<Doctor>.CreateNew().Persist();
+            await _context.SaveChangesAsync();
+
+            var doctorToTest3 = Builder<Doctor>.CreateNew().Persist();
+            await _context.SaveChangesAsync();
+
+            var doctorToTest4 = Builder<Doctor>.CreateNew().Persist();
+            await _context.SaveChangesAsync();
+
+            var listDoctorsToTest = _doctorRepository
+                .RetrieveMany(new List<Guid>() { doctorToTest.Id, doctorToTest2.Id, doctorToTest3.Id, doctorToTest4.Id });
+
+            listDoctorsToTest[0].Should().Be(doctorToTest);
+            listDoctorsToTest[3].Should().Be(doctorToTest4);
+            listDoctorsToTest.Count.Should().Be(4);
+        }
     }
 }

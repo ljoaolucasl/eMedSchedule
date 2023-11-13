@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eMedSchedule.WebApi", "eMedSchedule.WebApi\eMedSchedule.WebApi.csproj", "{F48994E8-FAB9-40A8-9C5A-B1D386410321}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eMedSchedule.WebApi", "eMedSchedule.WebApi\eMedSchedule.WebApi.csproj", "{F48994E8-FAB9-40A8-9C5A-B1D386410321}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Distributed", "1 - Distributed", "{18043737-2E69-45F6-A526-6F1CCC671DD2}"
 EndProject
@@ -15,13 +15,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infraestructure", "4 - 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - Tests", "5 - Tests", "{90ED0D39-8242-4C8F-AA10-DBF5D658841A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eMedSchedule.Application", "eMedSchedule.Application\eMedSchedule.Application.csproj", "{A9FACE62-33E9-4A6E-906E-AAE2DF3E1C21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eMedSchedule.Application", "eMedSchedule.Application\eMedSchedule.Application.csproj", "{A9FACE62-33E9-4A6E-906E-AAE2DF3E1C21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eMedSchedule.Domain", "eMedSchedule.Domain\eMedSchedule.Domain.csproj", "{698176C0-BE36-4254-A0A8-D8082FC6BCE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eMedSchedule.Domain", "eMedSchedule.Domain\eMedSchedule.Domain.csproj", "{698176C0-BE36-4254-A0A8-D8082FC6BCE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eMedSchedule.Infra.Orm", "eMedSchedule.Infra.Orm\eMedSchedule.Infra.Orm.csproj", "{A1C61995-F61E-4343-AB0E-3B27E35D0D0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eMedSchedule.Infra.Orm", "eMedSchedule.Infra.Orm\eMedSchedule.Infra.Orm.csproj", "{A1C61995-F61E-4343-AB0E-3B27E35D0D0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eMedSchedule.Tests", "eMedSchedule.Tests\eMedSchedule.Tests.csproj", "{A9F13068-46CE-4B35-A6D0-FE297C4F1827}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eMedSchedule.Tests", "eMedSchedule.Tests\eMedSchedule.Tests.csproj", "{A9F13068-46CE-4B35-A6D0-FE297C4F1827}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6 - TestConsole", "6 - TestConsole", "{61DDB02E-50D8-4C7F-B791-EC90C45C280D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eMedSchedule.ConsoleApp", "eMedSchedule.ConsoleApp\eMedSchedule.ConsoleApp.csproj", "{E1490A90-7573-4F8D-B700-14B3F9535705}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +53,10 @@ Global
 		{A9F13068-46CE-4B35-A6D0-FE297C4F1827}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9F13068-46CE-4B35-A6D0-FE297C4F1827}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9F13068-46CE-4B35-A6D0-FE297C4F1827}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1490A90-7573-4F8D-B700-14B3F9535705}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1490A90-7573-4F8D-B700-14B3F9535705}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1490A90-7573-4F8D-B700-14B3F9535705}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1490A90-7573-4F8D-B700-14B3F9535705}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +67,7 @@ Global
 		{698176C0-BE36-4254-A0A8-D8082FC6BCE2} = {826EDBEA-9E99-4C1E-BA80-42C6A3C63652}
 		{A1C61995-F61E-4343-AB0E-3B27E35D0D0E} = {47E5E0B2-1B4C-48EB-9594-D373A97F9E79}
 		{A9F13068-46CE-4B35-A6D0-FE297C4F1827} = {90ED0D39-8242-4C8F-AA10-DBF5D658841A}
+		{E1490A90-7573-4F8D-B700-14B3F9535705} = {61DDB02E-50D8-4C7F-B791-EC90C45C280D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DBD9D2A0-BD75-4E6A-B97B-A7FA37C0B791}

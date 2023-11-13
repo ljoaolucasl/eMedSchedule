@@ -4,13 +4,13 @@
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public byte[]? ProfilePicture { get; set; }
+        public string? ProfilePicture { get; set; }
 
         public ListDoctorViewModel()
         {
         }
 
-        public ListDoctorViewModel(Guid id, string name, byte[]? profilePicture)
+        public ListDoctorViewModel(Guid id, string name, string? profilePicture)
         {
             Id = id;
             Name = name;

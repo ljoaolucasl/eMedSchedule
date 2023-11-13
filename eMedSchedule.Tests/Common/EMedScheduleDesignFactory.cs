@@ -1,19 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using eMedSchedule.Infra.Orm.Common;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace eMedSchedule.Infra.Orm.Common
+namespace eMedSchedule.Tests.Common
 {
     public class EMedScheduleDesignFactory : IDesignTimeDbContextFactory<EMedScheduleContext>
     {
         public EMedScheduleContext CreateDbContext(string[] args)
         {
-            var configuracao = new ConfigurationBuilder()
+            var configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetCurrentDirectory())
                .AddJsonFile("appsettings.json")
                .Build();
 
-            var connectionString = configuracao.GetConnectionString("SqlServer");
+            var connectionString = configuration.GetConnectionString("SqlServer");
 
             var optionsBuilder = new DbContextOptionsBuilder<EMedScheduleContext>();
 

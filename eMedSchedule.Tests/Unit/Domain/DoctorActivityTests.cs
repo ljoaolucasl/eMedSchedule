@@ -1,7 +1,5 @@
 ﻿using eMedSchedule.Domain.DoctorActivityModule;
 using eMedSchedule.Domain.DoctorModule;
-using FluentAssertions;
-using FluentValidation.Results;
 
 namespace eMedSchedule.Tests.Unit.Domain
 {
@@ -15,7 +13,7 @@ namespace eMedSchedule.Tests.Unit.Domain
         public void Setup()
         {
             _validator = new DoctorActivityValidator();
-            _doctorActivity = new("Title", new List<Doctor>() { new Doctor("Carlos", "84526-SC") }, ActivityTypeEnum.Appointment,
+            _doctorActivity = new("Title", new List<Doctor>() { new Doctor("Carlos", "84526-SC", new byte[12]) }, ActivityTypeEnum.Appointment,
                 new DateTime(2020, 10, 10), new TimeSpan(10, 0, 0), new TimeSpan(11, 0, 0));
         }
 

@@ -4,13 +4,13 @@
     {
         public string Name { get; set; }
         public string CRM { get; set; }
-        public byte[]? ProfilePicture { get; set; }
+        public string? ProfilePicture { get; set; }
 
         public FormsDoctorViewModel()
         {
         }
 
-        public FormsDoctorViewModel(string name, string crm, byte[]? profilePicture)
+        public FormsDoctorViewModel(string name, string crm, string? profilePicture)
         {
             Name = name;
             CRM = crm;
