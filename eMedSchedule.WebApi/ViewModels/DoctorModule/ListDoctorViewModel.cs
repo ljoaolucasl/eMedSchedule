@@ -4,7 +4,7 @@
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string? ProfilePicture { get; set; }
+        public string? ProfilePictureBase64 { get; set; }
 
         public ListDoctorViewModel()
         {
@@ -14,7 +14,7 @@
         {
             Id = id;
             Name = name;
-            ProfilePicture = profilePicture;
+            ProfilePictureBase64 = profilePicture;
         }
     }
 }

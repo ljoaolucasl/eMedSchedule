@@ -16,6 +16,7 @@ namespace eMedSchedule.WebApi.ViewModels.DoctorActivityModule
 
         public FormsDoctorActivityViewModel()
         {
+
         }
 
         public FormsDoctorActivityViewModel(string title, List<Guid> selectedDoctors, ActivityTypeEnum activityType,

@@ -1,6 +1,7 @@
-﻿using eMedSchedule.Application.Services;
-using eMedSchedule.Domain.DoctorModule;
+﻿using eMedSchedule.Domain.DoctorModule;
 using eMedSchedule.WebApi.ViewModels.DoctorModule;
+using Microsoft.IdentityModel.Tokens;
+using System.Numerics;
 
 namespace eMedSchedule.WebApi.Controllers
 {
@@ -8,9 +9,9 @@ namespace eMedSchedule.WebApi.Controllers
     [ApiController]
     public class DoctorController : ApiControllerBase
     {
-        private readonly DoctorService _doctorService;
+        private readonly IDoctorService _doctorService;
 
-        public DoctorController(DoctorService doctorService, IMapper mapper) : base(mapper)
+        public DoctorController(IDoctorService doctorService, IMapper mapper) : base(mapper)
         {
             _doctorService = doctorService;
         }
@@ -68,6 +69,8 @@ namespace eMedSchedule.WebApi.Controllers
         public async Task<IActionResult> GetAsync()
         {
             var searchResult = await _doctorService.RetrieveAllAsync();
+
+            var test = Convert.ToBase64String(searchResult.Value[0].ProfilePicture);
 
             if (searchResult.IsFailed)
                 return NotFound(searchResult);

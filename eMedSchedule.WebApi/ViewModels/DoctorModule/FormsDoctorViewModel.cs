@@ -4,7 +4,7 @@
     {
         public string Name { get; set; }
         public string CRM { get; set; }
-        public string? ProfilePicture { get; set; }
+        public string? ProfilePictureBase64 { get; set; }
 
         public FormsDoctorViewModel()
         {
@@ -14,7 +14,7 @@
         {
             Name = name;
             CRM = crm;
-            ProfilePicture = profilePicture;
+            ProfilePictureBase64 = profilePicture;
         }
     }
 }

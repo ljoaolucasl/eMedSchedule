@@ -1,5 +1,4 @@
-﻿using eMedSchedule.Application.Services;
-using eMedSchedule.Domain.DoctorActivityModule;
+﻿using eMedSchedule.Domain.DoctorActivityModule;
 using eMedSchedule.WebApi.ViewModels.DoctorActivityModule;
 
 namespace eMedSchedule.WebApi.Controllers
@@ -8,9 +7,9 @@ namespace eMedSchedule.WebApi.Controllers
     [ApiController]
     public class DoctorActivityController : ApiControllerBase
     {
-        private readonly DoctorActivityService _doctorActivityService;
+        private readonly IDoctorActivityService _doctorActivityService;
 
-        public DoctorActivityController(DoctorActivityService doctorActivityService, IMapper mapper) : base(mapper)
+        public DoctorActivityController(IDoctorActivityService doctorActivityService, IMapper mapper) : base(mapper)
         {
             _doctorActivityService = doctorActivityService;
         }

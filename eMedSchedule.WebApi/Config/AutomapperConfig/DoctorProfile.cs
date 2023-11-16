@@ -8,16 +8,27 @@ namespace eMedSchedule.WebApi.Config.AutomapperConfig
         public DoctorProfile()
         {
             CreateMap<FormsDoctorViewModel, Doctor>()
-                .ForMember(destination => destination.ProfilePicture, opt => opt.MapFrom(origin => Convert.FromBase64String(origin.ProfilePicture)));
+                .ForMember(destination => destination.ProfilePicture, opt => opt
+                .MapFrom(origin => ConvertProfilePicture(origin.ProfilePictureBase64)));
 
             CreateMap<Doctor, ListDoctorViewModel>()
-                .ForMember(destination => destination.ProfilePicture, opt => opt.MapFrom(origin => Convert.ToBase64String(origin.ProfilePicture)));
+                .ForMember(destination => destination.ProfilePictureBase64, opt => opt.MapFrom(origin => ConvertProfilePicture(origin.ProfilePicture)));
 
             CreateMap<Doctor, FormsDoctorViewModel>()
-                .ForMember(destination => destination.ProfilePicture, opt => opt.MapFrom(origin => Convert.ToBase64String(origin.ProfilePicture)));
+                .ForMember(destination => destination.ProfilePictureBase64, opt => opt.MapFrom(origin => ConvertProfilePicture(origin.ProfilePicture)));
 
             CreateMap<Doctor, CompleteDoctorViewModel>()
-                .ForMember(destination => destination.ProfilePicture, opt => opt.MapFrom(origin => Convert.ToBase64String(origin.ProfilePicture)));
+                .ForMember(destination => destination.ProfilePictureBase64, opt => opt.MapFrom(origin => ConvertProfilePicture(origin.ProfilePicture)));
+        }
+
+        public byte[]? ConvertProfilePicture(string base64String)
+        {
+            return !string.IsNullOrEmpty(base64String) ? Convert.FromBase64String(base64String) : null;
+        }
+
+        public string? ConvertProfilePicture(byte[] byteArray)
+        {
+            return byteArray != null ? Convert.ToBase64String(byteArray) : null;
         }
     }
 }

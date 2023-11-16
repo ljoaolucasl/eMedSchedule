@@ -16,7 +16,7 @@ namespace eMedSchedule.WebApi.Controllers.Common
         {
             return base.Ok(new
             {
-                sucesso = true,
+                success = true,
                 data
             });
         }
@@ -27,8 +27,8 @@ namespace eMedSchedule.WebApi.Controllers.Common
 
             return base.BadRequest(new
             {
-                sucesso = false,
-                erros = erros.Select(x => x.Message)
+                success = false,
+                errors = erros.Select(x => x.Message)
             });
         }
 
@@ -38,8 +38,8 @@ namespace eMedSchedule.WebApi.Controllers.Common
 
             return base.NotFound(new
             {
-                sucesso = false,
-                erros = erros.Select(x => x.Message)
+                success = false,
+                errors = erros.Select(x => x.Message)
             });
         }
 

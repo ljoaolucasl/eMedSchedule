@@ -7,7 +7,7 @@ namespace eMedSchedule.WebApi.ViewModels.DoctorModule
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string CRM { get; set; }
-        public string? ProfilePicture { get; set; }
+        public string? ProfilePictureBase64 { get; set; }
         public List<ListDoctorActivityViewModel> Activities { get; set; }
 
         public CompleteDoctorViewModel()
@@ -20,7 +20,7 @@ namespace eMedSchedule.WebApi.ViewModels.DoctorModule
             Id = id;
             Name = name;
             CRM = crm;
-            ProfilePicture = profilePicture;
+            ProfilePictureBase64 = profilePicture;
             Activities = activities;
         }
     }

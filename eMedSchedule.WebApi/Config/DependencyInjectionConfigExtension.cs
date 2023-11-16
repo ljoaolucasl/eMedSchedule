@@ -18,11 +18,13 @@ namespace eMedSchedule.WebApi.Config
                 optionsBuilder.UseSqlServer(connectionString);
             });
 
-            services.AddTransient<IDoctorRepository, DoctorRepository>();
-            services.AddTransient<DoctorService>();
+            services.AddTransient<IDoctorService, DoctorService>();
+            services.AddTransient<IDoctorValidator, DoctorValidator>();
+            services.AddScoped<IDoctorRepository, DoctorRepository>();
 
-            services.AddTransient<IDoctorActivityRepository, DoctorActivityRepository>();
-            services.AddTransient<DoctorActivityService>();
+            services.AddTransient<IDoctorActivityService, DoctorActivityService>();
+            services.AddTransient<IDoctorActivityValidator, DoctorActivityValidator>();
+            services.AddScoped<IDoctorActivityRepository, DoctorActivityRepository>();
 
             services.AddTransient<ConfigureDoctorMappingAction>();
         }
