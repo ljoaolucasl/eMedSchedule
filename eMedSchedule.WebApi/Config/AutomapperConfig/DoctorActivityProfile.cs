@@ -11,13 +11,17 @@ namespace eMedSchedule.WebApi.Config.AutomapperConfig
             CreateMap<FormsDoctorActivityViewModel, DoctorActivity>()
                 .AfterMap<ConfigureDoctorMappingAction>();
 
-            CreateMap<DoctorActivity, ListDoctorActivityViewModel>();
+            CreateMap<DoctorActivity, ListDoctorActivityViewModel>()
+                .ForMember(destination => destination.StartTime, opt => opt.MapFrom(origin => origin.StartTime.ToString(@"hh\:mm")))
+                .ForMember(destination => destination.EndTime, opt => opt.MapFrom(origin => origin.EndTime.ToString(@"hh\:mm")));
 
             CreateMap<DoctorActivity, FormsDoctorActivityViewModel>()
                 .ForMember(destination => destination.SelectedDoctors,
                 opt => opt.MapFrom(origin => origin.Doctors.Select(x => x.Id)));
 
-            CreateMap<DoctorActivity, CompleteDoctorActivityViewModel>();
+            CreateMap<DoctorActivity, CompleteDoctorActivityViewModel>()
+                .ForMember(destination => destination.StartTime, opt => opt.MapFrom(origin => origin.StartTime.ToString(@"hh\:mm")))
+                .ForMember(destination => destination.EndTime, opt => opt.MapFrom(origin => origin.EndTime.ToString(@"hh\:mm")));
         }
     }
 
