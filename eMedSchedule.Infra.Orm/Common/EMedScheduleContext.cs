@@ -1,13 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using eMedSchedule.Domain.AuthenticationModule;
+using eMedSchedule.Domain.DoctorActivityModule;
+using eMedSchedule.Domain.DoctorModule;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace eMedSchedule.Infra.Orm.Common
 {
-    public class EMedScheduleContext : DbContext, IPersistenceContext
+    public class EMedScheduleContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>, IPersistenceContext
     {
-        public EMedScheduleContext(DbContextOptions<EMedScheduleContext> options) : base(options)
+        private Guid _userId;
+
+        public EMedScheduleContext(DbContextOptions<EMedScheduleContext> options, ITenantProvider? tenantProvider) : base(options)
         {
+            if (tenantProvider != null)
+                _userId = tenantProvider.UserId;
         }
 
         public async Task SaveDataAsync()
@@ -37,6 +46,9 @@ namespace eMedSchedule.Infra.Orm.Common
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(EMedScheduleContext).Assembly);
+
+            modelBuilder.Entity<Doctor>().HasQueryFilter(x => x.UserId == _userId);
+            modelBuilder.Entity<DoctorActivity>().HasQueryFilter(x => x.UserId == _userId);
         }
     }
 }

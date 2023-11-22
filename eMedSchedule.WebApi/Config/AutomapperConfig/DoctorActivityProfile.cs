@@ -9,7 +9,9 @@ namespace eMedSchedule.WebApi.Config.AutomapperConfig
         public DoctorActivityProfile()
         {
             CreateMap<FormsDoctorActivityViewModel, DoctorActivity>()
-                .AfterMap<ConfigureDoctorMappingAction>();
+                .AfterMap<ConfigureDoctorMappingAction>()
+                .ForMember(destination => destination.UserId, opt => opt
+                .MapFrom<UserResolver>());
 
             CreateMap<DoctorActivity, ListDoctorActivityViewModel>()
                 .ForMember(destination => destination.StartTime, opt => opt.MapFrom(origin => origin.StartTime.ToString(@"hh\:mm")))

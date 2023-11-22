@@ -8,7 +8,10 @@
             {
                 opt.AddProfile<DoctorProfile>();
                 opt.AddProfile<DoctorActivityProfile>();
+                opt.AddProfile<UserProfile>();
             });
+
+            services.AddTransient<UserResolver>();
         }
     }
 }

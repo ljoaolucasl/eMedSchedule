@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eMedSchedule.Infra.Orm.Common;
 
@@ -11,9 +12,11 @@ using eMedSchedule.Infra.Orm.Common;
 namespace eMedSchedule.Infra.Orm.Migrations
 {
     [DbContext(typeof(EMedScheduleContext))]
-    partial class EMedScheduleContextModelSnapshot : ModelSnapshot
+    [Migration("20231118191318_Identity_Configuration")]
+    partial class Identity_Configuration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

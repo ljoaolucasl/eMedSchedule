@@ -15,6 +15,12 @@ namespace eMedSchedule.Infra.Orm.Mappers
             builder.Property(d => d.ProfilePicture);
 
             builder.HasMany(x => x.Activities);
+
+            builder.HasOne(x => x.User)
+                .WithMany()
+                .IsRequired()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

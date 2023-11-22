@@ -1,4 +1,4 @@
-using Serilog;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace eMedSchedule.WebApi
 {
@@ -8,24 +8,17 @@ namespace eMedSchedule.WebApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.SuppressModelStateInvalidFilter = true;
-            });
-
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.Console()
-                .CreateLogger();
-
             builder.Logging.ClearProviders();
-            builder.Services.AddSerilog(Log.Logger);
 
-            builder.Services.ConfigureControllers();
-
-            builder.Services.ConfigureDependencyInjection(builder.Configuration);
+            builder.Services.ConfigureValidation();
+            builder.Services.ConfigureLog();
             builder.Services.ConfigureAutoMapper();
+            builder.Services.ConfigureDependencyInjection(builder.Configuration);
             builder.Services.ConfigureSwagger();
+            builder.Services.ConfigureControllers();
+            builder.Services.ConfigureJwt();
+
+            builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(Path.GetTempPath()));
 
             var app = builder.Build();
 
@@ -44,6 +37,8 @@ namespace eMedSchedule.WebApi
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

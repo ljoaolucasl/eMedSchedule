@@ -9,7 +9,9 @@ namespace eMedSchedule.WebApi.Config.AutomapperConfig
         {
             CreateMap<FormsDoctorViewModel, Doctor>()
                 .ForMember(destination => destination.ProfilePicture, opt => opt
-                .MapFrom(origin => ConvertProfilePicture(origin.ProfilePictureBase64)));
+                .MapFrom(origin => ConvertProfilePicture(origin.ProfilePictureBase64)))
+                .ForMember(destination => destination.UserId, opt => opt
+                .MapFrom<UserResolver>());
 
             CreateMap<Doctor, ListDoctorViewModel>()
                 .ForMember(destination => destination.ProfilePictureBase64, opt => opt.MapFrom(origin => ConvertProfilePicture(origin.ProfilePicture)));

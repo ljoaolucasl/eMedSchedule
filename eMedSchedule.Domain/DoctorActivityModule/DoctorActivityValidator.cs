@@ -24,6 +24,9 @@ namespace eMedSchedule.Domain.DoctorActivityModule
             RuleFor(dA => dA.Date)
                 .NotNull().WithMessage("'Date' is required.");
 
+            RuleFor(dA => dA)
+                .Must(dA => dA.Doctors != null ? dA.Doctors.All(d => d.ValidateDoctorSchedule(dA)) : true).WithMessage("Doctor has a scheduling conflict at this time.");
+
             RuleFor(dA => dA.StartTime)
                 .LessThan(a => a.EndTime).WithMessage("'Start Time' must be less than the 'End Time'.");
 

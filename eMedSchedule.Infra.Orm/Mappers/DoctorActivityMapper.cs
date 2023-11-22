@@ -19,6 +19,12 @@ namespace eMedSchedule.Infra.Orm.Mappers
             builder.HasMany(d => d.Doctors)
                 .WithMany(c => c.Activities)
                 .UsingEntity(x => x.ToTable("FK_TBDoctorActivity_TBDoctor"));
+
+            builder.HasOne(x => x.User)
+                .WithMany()
+                .IsRequired()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

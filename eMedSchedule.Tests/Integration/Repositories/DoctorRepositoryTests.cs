@@ -12,14 +12,18 @@ namespace eMedSchedule.Tests.Integration.Repositories
 
         private EMedScheduleContext _context;
 
+        private Guid _userId;
+
         [TestInitialize]
-        public void Setup()
+        public async Task Setup()
         {
-            _context = new EMedScheduleDesignFactory().CreateDbContext(null);
+            TestBase.DeleteUser();
+
+            _userId = TestBase.CadastrarUsuario();
+
+            _context = new EMedScheduleDesignFactory().CreateDbContext(new string[] { _userId.ToString() });
 
             _doctorRepository = new DoctorRepository(_context);
-
-            _context.RemoveRange(_doctorRepository.Data);
 
             BuilderSetup.SetCreatePersistenceMethod<Doctor>(_doctorRepository.AddTest);
         }
@@ -29,7 +33,7 @@ namespace eMedSchedule.Tests.Integration.Repositories
         [TestMethod]
         public async Task Doctor_Repository_Should_Insert_New_Doctor_On_DatabaseAsync()
         {
-            Doctor doctorToTest = Builder<Doctor>.CreateNew().Persist();
+            Doctor doctorToTest = Builder<Doctor>.CreateNew().With(x => x.UserId = _userId).Persist();
 
             await _context.SaveChangesAsync();
 
@@ -41,7 +45,7 @@ namespace eMedSchedule.Tests.Integration.Repositories
         [TestMethod]
         public async Task Doctor_Repository_Should_Update_The_Doctor_In_The_Database()
         {
-            var doctorToTest = Builder<Doctor>.CreateNew().Persist();
+            var doctorToTest = Builder<Doctor>.CreateNew().With(x => x.UserId = _userId).Persist();
             _context.SaveChanges();
 
             var doctorToTest2 = await _doctorRepository.RetrieveByIDAsync(doctorToTest.Id);
@@ -59,7 +63,7 @@ namespace eMedSchedule.Tests.Integration.Repositories
         [TestMethod]
         public async Task Doctor_Repository_Should_Delete_The_Doctor_In_The_Database()
         {
-            var doctorToTest = Builder<Doctor>.CreateNew().Persist();
+            var doctorToTest = Builder<Doctor>.CreateNew().With(x => x.UserId = _userId).Persist();
             await _context.SaveChangesAsync();
             var doctorToTest2 = await _doctorRepository.RetrieveByIDAsync(doctorToTest.Id);
 
@@ -72,7 +76,7 @@ namespace eMedSchedule.Tests.Integration.Repositories
         [TestMethod]
         public async Task Doctor_Repository_Should_Retrieve_The_Doctor_In_The_Database()
         {
-            var doctorToTest = Builder<Doctor>.CreateNew().Persist();
+            var doctorToTest = Builder<Doctor>.CreateNew().With(x => x.UserId = _userId).Persist();
             await _context.SaveChangesAsync();
 
             var doctorToTest2 = await _doctorRepository.RetrieveByIDAsync(doctorToTest.Id);
@@ -83,16 +87,16 @@ namespace eMedSchedule.Tests.Integration.Repositories
         [TestMethod]
         public async Task Doctor_Repository_Should_Retrieve_Every_Doctors_In_The_Database()
         {
-            var doctorToTest = Builder<Doctor>.CreateNew().Persist();
+            var doctorToTest = Builder<Doctor>.CreateNew().With(x => x.UserId = _userId).Persist();
             await _context.SaveChangesAsync();
 
-            Builder<Doctor>.CreateNew().Persist();
+            Builder<Doctor>.CreateNew().With(x => x.UserId = _userId).Persist();
             await _context.SaveChangesAsync();
 
-            Builder<Doctor>.CreateNew().Persist();
+            Builder<Doctor>.CreateNew().With(x => x.UserId = _userId).Persist();
             await _context.SaveChangesAsync();
 
-            var doctorToTest4 = Builder<Doctor>.CreateNew().Persist();
+            var doctorToTest4 = Builder<Doctor>.CreateNew().With(x => x.UserId = _userId).Persist();
             await _context.SaveChangesAsync();
 
             var listDoctorsToTest = await _doctorRepository.RetrieveAllAsync();
@@ -107,16 +111,16 @@ namespace eMedSchedule.Tests.Integration.Repositories
         [TestMethod]
         public async Task Doctor_Repository_Should_Retrieve_Many_Doctors_In_The_Database()
         {
-            var doctorToTest = Builder<Doctor>.CreateNew().Persist();
+            var doctorToTest = Builder<Doctor>.CreateNew().With(x => x.UserId = _userId).Persist();
             await _context.SaveChangesAsync();
 
-            var doctorToTest2 = Builder<Doctor>.CreateNew().Persist();
+            var doctorToTest2 = Builder<Doctor>.CreateNew().With(x => x.UserId = _userId).Persist();
             await _context.SaveChangesAsync();
 
-            var doctorToTest3 = Builder<Doctor>.CreateNew().Persist();
+            var doctorToTest3 = Builder<Doctor>.CreateNew().With(x => x.UserId = _userId).Persist();
             await _context.SaveChangesAsync();
 
-            var doctorToTest4 = Builder<Doctor>.CreateNew().Persist();
+            var doctorToTest4 = Builder<Doctor>.CreateNew().With(x => x.UserId = _userId).Persist();
             await _context.SaveChangesAsync();
 
             var listDoctorsToTest = _doctorRepository

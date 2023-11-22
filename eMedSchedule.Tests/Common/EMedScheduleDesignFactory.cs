@@ -20,7 +20,7 @@ namespace eMedSchedule.Tests.Common
 
             optionsBuilder.UseSqlServer(connectionString);
 
-            return new EMedScheduleContext(optionsBuilder.Options);
+            return new EMedScheduleContext(optionsBuilder.Options, new TestTenantProvider(Guid.Parse(args[0])));
         }
     }
 }

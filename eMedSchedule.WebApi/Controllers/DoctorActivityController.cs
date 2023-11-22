@@ -1,10 +1,12 @@
 ﻿using eMedSchedule.Domain.DoctorActivityModule;
 using eMedSchedule.WebApi.ViewModels.DoctorActivityModule;
+using Microsoft.AspNetCore.Authorization;
 
 namespace eMedSchedule.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/doctoractivity")]
     [ApiController]
+    [Authorize]
     public class DoctorActivityController : ApiControllerBase
     {
         private readonly IDoctorActivityService _doctorActivityService;

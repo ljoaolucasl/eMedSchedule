@@ -1,12 +1,12 @@
 ﻿using eMedSchedule.Domain.DoctorModule;
 using eMedSchedule.WebApi.ViewModels.DoctorModule;
-using Microsoft.IdentityModel.Tokens;
-using System.Numerics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace eMedSchedule.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/doctor")]
     [ApiController]
+    [Authorize]
     public class DoctorController : ApiControllerBase
     {
         private readonly IDoctorService _doctorService;
@@ -69,8 +69,6 @@ namespace eMedSchedule.WebApi.Controllers
         public async Task<IActionResult> GetAsync()
         {
             var searchResult = await _doctorService.RetrieveAllAsync();
-
-            var test = Convert.ToBase64String(searchResult.Value[0].ProfilePicture);
 
             if (searchResult.IsFailed)
                 return NotFound(searchResult);

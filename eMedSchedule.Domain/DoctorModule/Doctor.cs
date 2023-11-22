@@ -18,6 +18,36 @@ namespace eMedSchedule.Domain.DoctorModule
             Name = name;
             CRM = crm;
             ProfilePicture = profilePicture;
+            Activities = new List<DoctorActivity>();
+        }
+
+        public bool ValidateDoctorSchedule(DoctorActivity activityToValidate)
+        {
+            var newActivityStart = activityToValidate.Date + activityToValidate.StartTime;
+            var newActivityEnd = activityToValidate.Date + activityToValidate.EndTime + activityToValidate.RecoveryTime;
+
+            if ((activityToValidate.EndTime + activityToValidate.RecoveryTime) + activityToValidate.StartTime > TimeSpan.FromHours(24))
+            {
+                newActivityEnd = newActivityEnd.AddDays(1);
+            }
+
+            foreach (var existingActivity in Activities)
+            {
+                var existingActivityStart = existingActivity.Date + existingActivity.StartTime;
+                var existingActivityEnd = existingActivity.Date + existingActivity.EndTime + existingActivity.RecoveryTime;
+
+                if ((existingActivity.EndTime + existingActivity.RecoveryTime) + existingActivity.StartTime > TimeSpan.FromHours(24))
+                {
+                    existingActivityEnd = existingActivityEnd.AddDays(1);
+                }
+
+                if (!(existingActivityEnd <= newActivityStart || existingActivityStart >= newActivityEnd))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public override bool Equals(object? obj)

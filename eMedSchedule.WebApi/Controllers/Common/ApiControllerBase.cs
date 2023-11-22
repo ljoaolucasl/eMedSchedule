@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using System.Security.Claims;
 
 namespace eMedSchedule.WebApi.Controllers.Common
 {
