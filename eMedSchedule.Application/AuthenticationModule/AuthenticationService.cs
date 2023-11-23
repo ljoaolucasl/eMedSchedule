@@ -45,6 +45,9 @@ namespace eMedSchedule.Application.AuthenticationModule
             if (loginResult.IsNotAllowed)
                 errors.Add(new Error("Login or password invalid"));
 
+            if (!loginResult.Succeeded)
+                errors.Add(new Error("Login or password invalid"));
+
             if (errors.Count > 0)
                 return Result.Fail(errors);
 
