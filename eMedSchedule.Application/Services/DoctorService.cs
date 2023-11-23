@@ -75,6 +75,13 @@ namespace eMedSchedule.Application.Services
             return Result.Ok(doctor);
         }
 
+        public Result<List<Doctor>> GetListDoctorsMoreHoursWorked(DateTime startDate, DateTime endDate)
+        {
+            var doctors = _doctorRespository.GetListDoctorsMoreHoursWorked(startDate, endDate);
+
+            return Result.Ok(doctors);
+        }
+
         public Result ValidateService(Doctor obj)
         {
             var resultValidation = _doctorValidator.Validate(obj);
@@ -87,6 +94,9 @@ namespace eMedSchedule.Application.Services
 
                 errors.Add(new Error(validationFailure.ErrorMessage));
             }
+
+            if (_doctorRespository.Exist(obj))
+                errors.Add(new Error("This CRM is already registered"));
 
             if (errors.Any())
                 return Result.Fail(errors);

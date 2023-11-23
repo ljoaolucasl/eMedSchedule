@@ -105,5 +105,20 @@ namespace eMedSchedule.WebApi.Controllers
 
             return ProcessResult(searchResult, mapper.Map<CompleteDoctorViewModel>(searchResult.Value));
         }
+
+        [HttpGet("worked-hours/{startDate:datetime}={endDate:datetime}")]
+        [ProducesResponseType(typeof(ListWorkedHoursDoctorViewModel), 200)]
+        [ProducesResponseType(typeof(string[]), 400)]
+        [ProducesResponseType(typeof(string[]), 404)]
+        [ProducesResponseType(typeof(string[]), 500)]
+        public IActionResult GetDoctorsWokedHours(DateTime startDate, DateTime endDate)
+        {
+            var searchResult = _doctorService.GetListDoctorsMoreHoursWorked(startDate.ToUniversalTime(), endDate.ToUniversalTime());
+
+            if (searchResult.IsFailed)
+                return NotFound(searchResult);
+
+            return ProcessResult(searchResult, mapper.Map<List<ListWorkedHoursDoctorViewModel>>(searchResult.Value));
+        }
     }
 }

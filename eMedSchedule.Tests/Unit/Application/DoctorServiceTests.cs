@@ -58,17 +58,6 @@ namespace eMedSchedule.Tests.Unit.Application
             _repositoryMoq.Verify(x => x.AddAsync(_doctor), Times.Never());
         }
 
-        //[TestMethod]
-        //public async Task Doctor_Service_Should_Not_Insert_And_Catching_An_Exception_When_An_Exception_Is_Thrown()
-        //{
-        //    _repositoryMoq.Setup(x => x.AddAsync(It.IsAny<Doctor>()))
-        //        .Throws(() => new Exception());
-
-        //    var result = await _service.AddAsync(_doctor);
-
-        //    result.Should().BeFailure();
-        //}
-
         #endregion AddDoctor
 
         #region UpdateDoctor

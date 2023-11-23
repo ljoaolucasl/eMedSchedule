@@ -21,6 +21,10 @@ namespace eMedSchedule.WebApi.Config.AutomapperConfig
 
             CreateMap<Doctor, CompleteDoctorViewModel>()
                 .ForMember(destination => destination.ProfilePictureBase64, opt => opt.MapFrom(origin => ConvertProfilePicture(origin.ProfilePicture)));
+
+            CreateMap<Doctor, ListWorkedHoursDoctorViewModel>()
+                .ForMember(destination => destination.ProfilePictureBase64, opt => opt.MapFrom(origin => ConvertProfilePicture(origin.ProfilePicture)))
+                .ForMember(destination => destination.WorkedHours, opt => opt.MapFrom(origin => origin.WorkedHours.ToString(@"hh\:mm")));
         }
 
         public byte[]? ConvertProfilePicture(string base64String)

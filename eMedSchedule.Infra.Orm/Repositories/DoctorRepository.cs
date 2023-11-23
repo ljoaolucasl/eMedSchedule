@@ -28,7 +28,26 @@ namespace eMedSchedule.Infra.Orm.Repositories
 
         public List<Doctor> RetrieveMany(List<Guid> doctorsIds)
         {
-            return Data.Where(doctor => doctorsIds.Contains(doctor.Id)).ToList();
+            return Data.Include(x => x.Activities).Where(doctor => doctorsIds.Contains(doctor.Id)).ToList();
+        }
+
+        public bool Exist(Doctor objectToCheck)
+        {
+            return Data.ToList().Any(d => d.CRM == objectToCheck.CRM);
+        }
+
+        public List<Doctor> GetListDoctorsMoreHoursWorked(DateTime startDate, DateTime endDate)
+        {
+            return Data
+                .Include(d => d.Activities)
+                .ToList()
+                .Select(d =>
+                {
+                    d.CalculateWorkedHourDoctorsPeriod(startDate, endDate);
+                    return d;
+                })
+                .OrderByDescending(d => d.WorkedHours)
+                .ToList();
         }
     }
 }

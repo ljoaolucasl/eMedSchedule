@@ -1,4 +1,5 @@
-﻿using eMedSchedule.Domain.DoctorModule;
+﻿using eMedSchedule.Domain.DoctorActivityModule;
+using eMedSchedule.Domain.DoctorModule;
 using eMedSchedule.Infra.Orm.Common;
 using eMedSchedule.Infra.Orm.Repositories;
 using FizzWare.NBuilder;
@@ -9,6 +10,7 @@ namespace eMedSchedule.Tests.Integration.Repositories
     public class DoctorRepositoryTests
     {
         private DoctorRepository _doctorRepository;
+        private DoctorActivityRepository _doctorActivityRepository;
 
         private EMedScheduleContext _context;
 
@@ -24,8 +26,10 @@ namespace eMedSchedule.Tests.Integration.Repositories
             _context = new EMedScheduleDesignFactory().CreateDbContext(new string[] { _userId.ToString() });
 
             _doctorRepository = new DoctorRepository(_context);
+            _doctorActivityRepository = new DoctorActivityRepository(_context);
 
             BuilderSetup.SetCreatePersistenceMethod<Doctor>(_doctorRepository.AddTest);
+            BuilderSetup.SetCreatePersistenceMethod<DoctorActivity>(_doctorActivityRepository.AddTest);
         }
 
         #region CrudDoctor
@@ -108,6 +112,8 @@ namespace eMedSchedule.Tests.Integration.Repositories
 
         #endregion CrudDoctor
 
+        #region RetrieveMany
+
         [TestMethod]
         public async Task Doctor_Repository_Should_Retrieve_Many_Doctors_In_The_Database()
         {
@@ -130,5 +136,80 @@ namespace eMedSchedule.Tests.Integration.Repositories
             listDoctorsToTest[3].Should().Be(doctorToTest4);
             listDoctorsToTest.Count.Should().Be(4);
         }
+
+        #endregion RetrieveMany
+
+        #region CRMExists
+
+        [TestMethod]
+        public async Task Doctor_Repository_Should_True_When_Doctor_Crm_Exists()
+        {
+            var doctorToTest = Builder<Doctor>.CreateNew().With(x => x.UserId = _userId).Persist();
+            await _context.SaveChangesAsync();
+
+            var doctorToCheck = new Doctor("Marcos", doctorToTest.CRM, new byte[12]);
+
+            bool result = _doctorRepository.Exist(doctorToCheck);
+
+            result.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public async Task Doctor_Repository_Should_False_When_Doctor_Crm_Not_Exists()
+        {
+            var doctorToTest = Builder<Doctor>.CreateNew().With(x => x.UserId = _userId).Persist();
+            await _context.SaveChangesAsync();
+
+            var doctorToCheck = new Doctor("Marcos", "45621-SC", new byte[12]);
+
+            bool result = _doctorRepository.Exist(doctorToCheck);
+
+            result.Should().BeFalse();
+        }
+
+        #endregion CRMExists
+
+        #region CalculateWorkedHours
+
+        [TestMethod]
+        public async Task Doctor_Repository_Should_True_When_Doctor_Crm_Exists2()
+        {
+            var doctorToTest = Builder<Doctor>.CreateNew().With(x => x.UserId = _userId).With(x => x.WorkedHours = TimeSpan.Zero).Persist();
+            await _context.SaveChangesAsync();
+
+            var doctor = await _doctorRepository.RetrieveByIDAsync(doctorToTest.Id);
+
+            var activityToTest = Builder<DoctorActivity>.CreateNew()
+                .With(x => x.UserId = _userId)
+                .With(x => x.Doctors = new List<Doctor>() { doctor })
+                .With(x => x.StartTime = new TimeSpan(10, 0, 0))
+                .With(x => x.EndTime = new TimeSpan(11, 0, 0))
+                .With(x => x.Date = new DateTime(2023, 10, 10))
+                .Persist();
+            await _context.SaveChangesAsync();
+
+            var doctorToTest2 = Builder<Doctor>.CreateNew().With(x => x.UserId = _userId).With(x => x.WorkedHours = TimeSpan.Zero).Persist();
+            await _context.SaveChangesAsync();
+
+            var doctor2 = await _doctorRepository.RetrieveByIDAsync(doctorToTest2.Id);
+
+            var activityToTest2 = Builder<DoctorActivity>.CreateNew()
+                .With(x => x.UserId = _userId)
+                .With(x => x.Doctors = new List<Doctor>() { doctor2, doctor })
+                .With(x => x.StartTime = new TimeSpan(10, 0, 0))
+                .With(x => x.EndTime = new TimeSpan(11, 0, 0))
+                .With(x => x.Date = new DateTime(2023, 10, 10))
+                .Persist();
+            await _context.SaveChangesAsync();
+
+            var doctorsToTest = _doctorRepository.GetListDoctorsMoreHoursWorked(new DateTime(2023, 10, 10), new DateTime(2023, 10, 11));
+
+            doctorsToTest[1].WorkedHours.Should().Be(new TimeSpan(1, 0, 0));
+            doctorsToTest[0].WorkedHours.Should().Be(new TimeSpan(2, 0, 0));
+            doctorsToTest[0].Should().Be(doctor);
+            doctorsToTest.Count.Should().Be(2);
+        }
+
+        #endregion CalculateWorkedHours
     }
 }

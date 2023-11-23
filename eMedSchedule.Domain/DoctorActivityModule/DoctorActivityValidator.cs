@@ -25,13 +25,8 @@ namespace eMedSchedule.Domain.DoctorActivityModule
                 .NotNull().WithMessage("'Date' is required.");
 
             RuleFor(dA => dA)
+                .Must(dA => dA.Doctors != null ? ValidateDoctorsByTypeActivity(dA) : true).WithMessage("An appointment cannot have more than 1 doctor.")
                 .Must(dA => dA.Doctors != null ? dA.Doctors.All(d => d.ValidateDoctorSchedule(dA)) : true).WithMessage("Doctor has a scheduling conflict at this time.");
-
-            RuleFor(dA => dA.StartTime)
-                .LessThan(a => a.EndTime).WithMessage("'Start Time' must be less than the 'End Time'.");
-
-            RuleFor(dA => dA.EndTime)
-                .GreaterThan(a => a.StartTime).WithMessage("'End Time' must be greater than 'Start Time'.");
         }
 
         private void ValidateInvalidCharacter(string name, ValidationContext<DoctorActivity> context)
@@ -41,6 +36,11 @@ namespace eMedSchedule.Domain.DoctorActivityModule
 
             if (!Regex.IsMatch(name, @"^[\p{L}\p{M}'\s-\d]+$"))
                 context.AddFailure("Invalid Character");
+        }
+
+        private bool ValidateDoctorsByTypeActivity(DoctorActivity activity)
+        {
+            return !(activity.ActivityType == ActivityTypeEnum.Appointment && activity.Doctors.Count > 1);
         }
     }
 }

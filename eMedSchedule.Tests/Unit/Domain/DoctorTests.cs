@@ -1,4 +1,5 @@
-﻿using eMedSchedule.Domain.DoctorModule;
+﻿using eMedSchedule.Domain.DoctorActivityModule;
+using eMedSchedule.Domain.DoctorModule;
 
 namespace eMedSchedule.Tests.Unit.Domain
 {
@@ -6,13 +7,18 @@ namespace eMedSchedule.Tests.Unit.Domain
     public class DoctorTests
     {
         private DoctorValidator _validator;
+        private DoctorActivityValidator _validatorActivity;
         private Doctor _doctor;
+        private DoctorActivity _doctorActivity;
 
         [TestInitialize]
         public void Setup()
         {
             _validator = new DoctorValidator();
+            _validatorActivity = new DoctorActivityValidator();
             _doctor = new("Carlos", "84526-SC", new byte[12]);
+            _doctorActivity = new("Title", new List<Doctor>() { new Doctor("Carlos", "84526-SC", new byte[12]) }, ActivityTypeEnum.Appointment,
+                new DateTime(2020, 10, 10), new TimeSpan(10, 0, 0), new TimeSpan(11, 0, 0));
         }
 
         [TestMethod]
@@ -128,5 +134,226 @@ namespace eMedSchedule.Tests.Unit.Domain
         }
 
         #endregion ProfilePicture
+
+        #region ValidateSchedule
+
+        [TestMethod]
+        public void Doctor_Activity_Validate_Should_Return_True_When_The_Doctor_Schedule_Appointment_Success()
+        {
+            var doctorToTest = new List<Doctor>() { new Doctor("Carlos", "84526-SC", new byte[12]) };
+
+            var doctorActivityToTest = new DoctorActivity("Title2", doctorToTest, ActivityTypeEnum.Appointment,
+                new DateTime(2020, 10, 10), new TimeSpan(3, 0, 0), new TimeSpan(5, 0, 0));
+
+            _doctorActivity.Doctors = doctorToTest;
+            _doctorActivity.StartTime = new TimeSpan(6, 0, 0);
+            _doctorActivity.EndTime = new TimeSpan(10, 0, 0);
+
+            doctorToTest[0].Activities = new List<DoctorActivity>() { _doctorActivity };
+
+            ValidationResult result = _validatorActivity.Validate(doctorActivityToTest);
+
+            result.IsValid.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Doctor_Activity_Validate_Should_Return_False_When_The_Doctor_Schedule_Appointment_Has_A_Conflict()
+        {
+            var doctorToTest = new List<Doctor>() { new Doctor("Carlos", "84526-SC", new byte[12]) };
+
+            var doctorActivityToTest = new DoctorActivity("Title2", doctorToTest, ActivityTypeEnum.Appointment,
+                new DateTime(2020, 10, 10), new TimeSpan(3, 0, 0), new TimeSpan(5, 0, 0));
+
+            _doctorActivity.Doctors = doctorToTest;
+            _doctorActivity.StartTime = new TimeSpan(1, 0, 0);
+            _doctorActivity.EndTime = new TimeSpan(3, 0, 0);
+
+            doctorToTest[0].Activities = new List<DoctorActivity>() { _doctorActivity };
+
+            ValidationResult result = _validatorActivity.Validate(doctorActivityToTest);
+
+            result.IsValid.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Doctor_Activity_Validate_Should_Return_False_When_The_Doctor_Schedule_Appointment_Has_A_Conflict_2()
+        {
+            var doctorToTest = new List<Doctor>() { new Doctor("Carlos", "84526-SC", new byte[12]) };
+
+            var doctorActivityToTest = new DoctorActivity("Title2", doctorToTest, ActivityTypeEnum.Appointment,
+                new DateTime(2020, 10, 10), new TimeSpan(3, 0, 0), new TimeSpan(5, 0, 0));
+
+            _doctorActivity.Doctors = doctorToTest;
+            _doctorActivity.StartTime = new TimeSpan(5, 0, 0);
+            _doctorActivity.EndTime = new TimeSpan(7, 0, 0);
+
+            doctorToTest[0].Activities = new List<DoctorActivity>() { _doctorActivity };
+
+            ValidationResult result = _validatorActivity.Validate(doctorActivityToTest);
+
+            result.IsValid.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Doctor_Activity_Validate_Should_Return_False_When_The_Doctor_Schedule_Appointment_Has_A_Conflict_3()
+        {
+            var doctorToTest = new List<Doctor>() { new Doctor("Carlos", "84526-SC", new byte[12]) };
+
+            var doctorActivityToTest = new DoctorActivity("Title2", doctorToTest, ActivityTypeEnum.Appointment,
+                new DateTime(2020, 10, 10), new TimeSpan(1, 0, 0), new TimeSpan(5, 0, 0));
+
+            _doctorActivity.Date = new DateTime(2020, 10, 9);
+            _doctorActivity.Doctors = doctorToTest;
+            _doctorActivity.StartTime = new TimeSpan(23, 0, 0);
+            _doctorActivity.EndTime = new TimeSpan(1, 0, 0);
+
+            doctorToTest[0].Activities = new List<DoctorActivity>() { _doctorActivity };
+
+            ValidationResult result = _validatorActivity.Validate(doctorActivityToTest);
+
+            result.IsValid.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Doctor_Activity_Validate_Should_Return_True_When_The_Doctor_Schedule_Surgery_Success()
+        {
+            var doctorToTest = new List<Doctor>() { new Doctor("Carlos", "84526-SC", new byte[12]) };
+
+            var doctorActivityToTest = new DoctorActivity("Title2", doctorToTest, ActivityTypeEnum.Surgery,
+                new DateTime(2020, 10, 10), new TimeSpan(7, 0, 0), new TimeSpan(10, 0, 0));
+
+            _doctorActivity.Doctors = doctorToTest;
+            _doctorActivity.ActivityType = ActivityTypeEnum.Surgery;
+            _doctorActivity.StartTime = new TimeSpan(1, 0, 0);
+            _doctorActivity.EndTime = new TimeSpan(3, 0, 0);
+
+            doctorToTest[0].Activities = new List<DoctorActivity>() { _doctorActivity };
+
+            ValidationResult result = _validatorActivity.Validate(doctorActivityToTest);
+
+            result.IsValid.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Doctor_Activity_Validate_Should_Return_False_When_The_Doctor_Schedule_Surgery_Has_A_Conflict()
+        {
+            var doctorToTest = new List<Doctor>() { new Doctor("Carlos", "84526-SC", new byte[12]) };
+
+            var doctorActivityToTest = new DoctorActivity("Title2", doctorToTest, ActivityTypeEnum.Surgery,
+                new DateTime(2020, 10, 10), new TimeSpan(6, 0, 0), new TimeSpan(10, 0, 0));
+
+            _doctorActivity.Doctors = doctorToTest;
+            _doctorActivity.ActivityType = ActivityTypeEnum.Surgery;
+            _doctorActivity.StartTime = new TimeSpan(1, 0, 0);
+            _doctorActivity.EndTime = new TimeSpan(3, 0, 0);
+
+            doctorToTest[0].Activities = new List<DoctorActivity>() { _doctorActivity };
+
+            ValidationResult result = _validatorActivity.Validate(doctorActivityToTest);
+
+            result.IsValid.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Doctor_Activity_Validate_Should_Return_False_When_The_Doctor_Schedule_Surgery_Has_A_Conflict_2()
+        {
+            var doctorToTest = new List<Doctor>() { new Doctor("Carlos", "84526-SC", new byte[12]) };
+
+            var doctorActivityToTest = new DoctorActivity("Title2", doctorToTest, ActivityTypeEnum.Surgery,
+                new DateTime(2020, 10, 10), new TimeSpan(3, 0, 0), new TimeSpan(5, 0, 0));
+
+            _doctorActivity.Doctors = doctorToTest;
+            _doctorActivity.StartTime = new TimeSpan(8, 0, 0);
+            _doctorActivity.EndTime = new TimeSpan(10, 0, 0);
+
+            doctorToTest[0].Activities = new List<DoctorActivity>() { _doctorActivity };
+
+            ValidationResult result = _validatorActivity.Validate(doctorActivityToTest);
+
+            result.IsValid.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Doctor_Activity_Validate_Should_Return_False_When_The_Doctor_Schedule_Surgery_Has_A_Conflict_3()
+        {
+            var doctorToTest = new List<Doctor>() { new Doctor("Carlos", "84526-SC", new byte[12]) };
+
+            var doctorActivityToTest = new DoctorActivity("Title2", doctorToTest, ActivityTypeEnum.Surgery,
+                new DateTime(2020, 10, 10), new TimeSpan(3, 0, 0), new TimeSpan(5, 0, 0));
+
+            _doctorActivity.Date = new DateTime(2020, 10, 9);
+            _doctorActivity.Doctors = doctorToTest;
+            _doctorActivity.ActivityType = ActivityTypeEnum.Surgery;
+            _doctorActivity.StartTime = new TimeSpan(23, 0, 0);
+            _doctorActivity.EndTime = new TimeSpan(1, 0, 0);
+
+            doctorToTest[0].Activities = new List<DoctorActivity>() { _doctorActivity };
+
+            ValidationResult result = _validatorActivity.Validate(doctorActivityToTest);
+
+            result.IsValid.Should().BeFalse();
+        }
+
+        #endregion ValidateSchedule
+
+        #region CalculateWorkedHour
+
+        [TestMethod]
+        public void Doctor_Should_Return_3_Hours_When_Correctly_Calculated()
+        {
+            var doctorToTest = new Doctor("Carlos", "84526-SC", new byte[12]);
+            var doctorActivityToTest = new DoctorActivity("Title2", new List<Doctor>() { doctorToTest }, ActivityTypeEnum.Surgery,
+                new DateTime(2020, 10, 10), new TimeSpan(3, 0, 0), new TimeSpan(5, 0, 0));
+            _doctorActivity.Doctors.Add(doctorToTest);
+            doctorToTest.Activities = new List<DoctorActivity>() { _doctorActivity, doctorActivityToTest };
+
+            doctorToTest.CalculateWorkedHourDoctorsPeriod(new DateTime(2020, 10, 10), new DateTime(2020, 10, 11));
+
+            doctorToTest.WorkedHours.Should().Be(new TimeSpan(3, 0, 0));
+        }
+
+        [TestMethod]
+        public void Doctor_Should_Return_2_Hours_When_Correctly_Calculated2()
+        {
+            var doctorToTest = new Doctor("Carlos", "84526-SC", new byte[12]);
+            var doctorActivityToTest = new DoctorActivity("Title2", new List<Doctor>() { doctorToTest }, ActivityTypeEnum.Surgery,
+                new DateTime(2020, 10, 11), new TimeSpan(3, 0, 0), new TimeSpan(5, 0, 0));
+            _doctorActivity.Doctors.Add(doctorToTest);
+            doctorToTest.Activities = new List<DoctorActivity>() { _doctorActivity, doctorActivityToTest };
+
+            doctorToTest.CalculateWorkedHourDoctorsPeriod(new DateTime(2020, 10, 11), new DateTime(2020, 10, 11));
+
+            doctorToTest.WorkedHours.Should().Be(new TimeSpan(2, 0, 0));
+        }
+
+        [TestMethod]
+        public void Doctor_Should_Return_2_Hours_When_Correctly_Calculated3()
+        {
+            var doctorToTest = new Doctor("Carlos", "84526-SC", new byte[12]);
+            var doctorActivityToTest = new DoctorActivity("Title2", new List<Doctor>() { doctorToTest }, ActivityTypeEnum.Surgery,
+                new DateTime(2020, 10, 11), new TimeSpan(23, 0, 0), new TimeSpan(1, 0, 0));
+            _doctorActivity.Doctors.Add(doctorToTest);
+            doctorToTest.Activities = new List<DoctorActivity>() { _doctorActivity, doctorActivityToTest };
+
+            doctorToTest.CalculateWorkedHourDoctorsPeriod(new DateTime(2020, 10, 11), new DateTime(2020, 10, 11));
+
+            doctorToTest.WorkedHours.Should().Be(new TimeSpan(2, 0, 0));
+        }
+
+        [TestMethod]
+        public void Doctor_Should_Return_2_Hours_When_Correctly_Calculated4()
+        {
+            var doctorToTest = new Doctor("Carlos", "84526-SC", new byte[12]);
+            var doctorActivityToTest = new DoctorActivity("Title2", new List<Doctor>() { doctorToTest }, ActivityTypeEnum.Surgery,
+                new DateTime(3000, 10, 11), new TimeSpan(23, 0, 0), new TimeSpan(1, 0, 0));
+            _doctorActivity.Doctors.Add(doctorToTest);
+            doctorToTest.Activities = new List<DoctorActivity>() { _doctorActivity, doctorActivityToTest };
+
+            doctorToTest.CalculateWorkedHourDoctorsPeriod(new DateTime(2020, 10, 11), new DateTime(2020, 10, 11));
+
+            doctorToTest.WorkedHours.Should().Be(new TimeSpan(0, 0, 0));
+        }
+
+        #endregion CalculateWorkedHour
     }
 }
