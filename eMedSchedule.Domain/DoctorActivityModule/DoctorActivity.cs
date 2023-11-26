@@ -1,4 +1,5 @@
 ﻿using eMedSchedule.Domain.DoctorModule;
+using System.Collections;
 using System.ComponentModel;
 
 namespace eMedSchedule.Domain.DoctorActivityModule
@@ -24,6 +25,16 @@ namespace eMedSchedule.Domain.DoctorActivityModule
         {
             Title = title;
             Doctors = doctors;
+            ActivityType = activityType;
+            Date = date;
+            StartTime = startTime;
+            EndTime = endTime;
+        }
+
+        public DoctorActivity(string title, ActivityTypeEnum activityType,
+            DateTime date, TimeSpan startTime, TimeSpan endTime)
+        {
+            Title = title;
             ActivityType = activityType;
             Date = date;
             StartTime = startTime;

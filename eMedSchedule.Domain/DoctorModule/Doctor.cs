@@ -26,6 +26,29 @@ namespace eMedSchedule.Domain.DoctorModule
             WorkedHours = TimeSpan.Zero;
         }
 
+        public bool ValidateDoctorPendingActivity(Doctor doctorToValidate)
+        {
+            if (Activities == null)
+                return true;
+
+            foreach (var existingActivity in Activities)
+            {
+                var existingActivityEnd = existingActivity.Date.Date + existingActivity.EndTime + existingActivity.RecoveryTime;
+
+                if ((existingActivity.EndTime + existingActivity.RecoveryTime) < existingActivity.StartTime)
+                {
+                    existingActivityEnd = existingActivityEnd.AddDays(1);
+                }
+
+                if (existingActivityEnd > DateTime.Now)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public bool ValidateDoctorSchedule(DoctorActivity activityToValidate)
         {
             var newActivityStart = activityToValidate.Date.Date + activityToValidate.StartTime;

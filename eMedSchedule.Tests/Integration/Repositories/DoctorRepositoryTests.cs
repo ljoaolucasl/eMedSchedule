@@ -19,11 +19,11 @@ namespace eMedSchedule.Tests.Integration.Repositories
         [TestInitialize]
         public async Task Setup()
         {
-            TestBase.DeleteUser();
+            TestBase.DeleteData();
 
-            _userId = TestBase.CadastrarUsuario();
+            _userId = TestBase.RegisterUser();
 
-            _context = new EMedScheduleDesignFactory().CreateDbContext(new string[] { _userId.ToString() });
+            _context = new EMedScheduleDesignFactory().CreateDbContext(null);
 
             _doctorRepository = new DoctorRepository(_context);
             _doctorActivityRepository = new DoctorActivityRepository(_context);

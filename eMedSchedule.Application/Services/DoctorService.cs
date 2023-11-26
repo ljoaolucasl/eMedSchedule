@@ -47,11 +47,18 @@ namespace eMedSchedule.Application.Services
 
         public async Task<Result> DeleteAsync(Doctor doctorToDelete)
         {
-            _doctorRespository.Delete(doctorToDelete);
+            if (doctorToDelete.ValidateDoctorPendingActivity(doctorToDelete))
+            {
+                _doctorRespository.Delete(doctorToDelete);
 
-            await _persistenceContext.SaveDataAsync();
+                await _persistenceContext.SaveDataAsync();
 
-            return Result.Ok();
+                return Result.Ok();
+            }
+
+            Log.Logger.Warning("Doctor {DoctorName} has pending activities", doctorToDelete.Name);
+
+            return Result.Fail($"Doctor {doctorToDelete.Name} has pending activities");
         }
 
         public async Task<Result<List<Doctor>>> RetrieveAllAsync()

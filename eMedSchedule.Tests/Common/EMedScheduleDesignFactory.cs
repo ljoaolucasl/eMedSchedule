@@ -9,6 +9,8 @@ namespace eMedSchedule.Tests.Common
     {
         public EMedScheduleContext CreateDbContext(string[] args)
         {
+            Guid userId = Guid.Parse("A8BC593B-5945-417B-3C2A-08DBE8775234");
+
             var configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetCurrentDirectory())
                .AddJsonFile("appsettings.json")
@@ -20,7 +22,7 @@ namespace eMedSchedule.Tests.Common
 
             optionsBuilder.UseSqlServer(connectionString);
 
-            return new EMedScheduleContext(optionsBuilder.Options, new TestTenantProvider(Guid.Parse(args[0])));
+            return new EMedScheduleContext(optionsBuilder.Options, new TestTenantProvider(userId));
         }
     }
 }

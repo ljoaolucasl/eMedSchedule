@@ -1,5 +1,7 @@
 ﻿using eMedSchedule.Domain.DoctorActivityModule;
 using eMedSchedule.Domain.DoctorModule;
+using FizzWare.NBuilder;
+using Moq;
 
 namespace eMedSchedule.Tests.Unit.Domain
 {
@@ -134,6 +136,40 @@ namespace eMedSchedule.Tests.Unit.Domain
         }
 
         #endregion ProfilePicture
+
+        #region ValidateActivityPending
+
+        [TestMethod]
+        public async Task Doctor_Should_Return_True_When_Doctor_Has_No_Pending_Activity()
+        {
+            var doctorToTest = Builder<Doctor>.CreateNew().Build();
+
+            var doctorActivityToTest = new DoctorActivity("Title2", new List<Doctor>() { doctorToTest }, ActivityTypeEnum.Appointment,
+                new DateTime(2000, 10, 10), new TimeSpan(3, 0, 0), new TimeSpan(5, 0, 0));
+
+            doctorToTest.Activities = new List<DoctorActivity>() { doctorActivityToTest };
+
+            var result = doctorToTest.ValidateDoctorPendingActivity(doctorToTest);
+
+            result.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public async Task Doctor_Should_Return_False_When_Doctor_Has_Pending_Activity()
+        {
+            var doctorToTest = Builder<Doctor>.CreateNew().Build();
+
+            var doctorActivityToTest = new DoctorActivity("Title2", new List<Doctor>() { doctorToTest }, ActivityTypeEnum.Appointment,
+                new DateTime(3000, 10, 10), new TimeSpan(3, 0, 0), new TimeSpan(5, 0, 0));
+
+            doctorToTest.Activities = new List<DoctorActivity>() { doctorActivityToTest };
+
+            var result = doctorToTest.ValidateDoctorPendingActivity(doctorToTest);
+
+            result.Should().BeFalse();
+        }
+
+        #endregion ValidateActivityPending
 
         #region ValidateSchedule
 

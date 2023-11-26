@@ -3,28 +3,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace eMedSchedule.Infra.Orm.Migrations
 {
     /// <inheritdoc />
-    public partial class Identity_Configuration : Migration
+    public partial class initialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<Guid>(
-                name: "UserId",
-                table: "TBDoctorActivity",
-                type: "uniqueidentifier",
-                nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "UserId",
-                table: "TBDoctor",
-                type: "uniqueidentifier",
-                nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -171,15 +159,118 @@ namespace eMedSchedule.Infra.Orm.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_TBDoctorActivity_UserId",
-                table: "TBDoctorActivity",
-                column: "UserId");
+            migrationBuilder.CreateTable(
+                name: "TBDoctor",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "varchar(100)", nullable: false),
+                    CRM = table.Column<string>(type: "varchar(100)", nullable: false),
+                    ProfilePicture = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TBDoctor", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TBDoctor_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_TBDoctor_UserId",
+            migrationBuilder.CreateTable(
+                name: "TBDoctorActivity",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "varchar(100)", nullable: false),
+                    ActivityType = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartTime = table.Column<long>(type: "bigint", nullable: false),
+                    EndTime = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TBDoctorActivity", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TBDoctorActivity_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FK_TBDoctorActivity_TBDoctor",
+                columns: table => new
+                {
+                    ActivitiesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DoctorsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FK_TBDoctorActivity_TBDoctor", x => new { x.ActivitiesId, x.DoctorsId });
+                    table.ForeignKey(
+                        name: "FK_FK_TBDoctorActivity_TBDoctor_TBDoctorActivity_ActivitiesId",
+                        column: x => x.ActivitiesId,
+                        principalTable: "TBDoctorActivity",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FK_TBDoctorActivity_TBDoctor_TBDoctor_DoctorsId",
+                        column: x => x.DoctorsId,
+                        principalTable: "TBDoctor",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { new Guid("e7944276-5214-46c7-2755-08dbede3db7d"), 0, "6f07bdcf-9ff3-43da-9f8b-5e27808f81ab", "teste@gmail.com", true, false, null, "Teste", "TESTE@GMAIL.COM", "TESTE@GMAIL.COM", "AQAAAAIAAYagAAAAEEpbfL1sGZGAQmfY11et9nzZ5tdMmLv5uVMiv4xXugJLxfksPyB7aJgai6Yym57vFQ==", null, false, "NQY5DMARMJNDQ7CUQJP3U4O7SYXLNANC", false, "teste@gmail.com" });
+
+            migrationBuilder.InsertData(
                 table: "TBDoctor",
-                column: "UserId");
+                columns: new[] { "Id", "CRM", "Name", "ProfilePicture", "UserId" },
+                values: new object[,]
+                {
+                    { new Guid("2093bd03-7aa1-49f9-a44c-11523684212a"), "17497-SP", "Mateus", null, new Guid("e7944276-5214-46c7-2755-08dbede3db7d") },
+                    { new Guid("93b57152-eebb-45f0-8647-ca582580a93e"), "64732-SC", "Antônio", null, new Guid("e7944276-5214-46c7-2755-08dbede3db7d") },
+                    { new Guid("e5263897-c9e6-4234-8425-934e455697dd"), "45872-SC", "Marcos", null, new Guid("e7944276-5214-46c7-2755-08dbede3db7d") },
+                    { new Guid("edadb5a0-2b4b-4913-9d34-51fb0edb2852"), "86463-RS", "Clara", null, new Guid("e7944276-5214-46c7-2755-08dbede3db7d") }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TBDoctorActivity",
+                columns: new[] { "Id", "ActivityType", "Date", "EndTime", "StartTime", "Title", "UserId" },
+                values: new object[,]
+                {
+                    { new Guid("08dbee49-5c82-d7a8-6fc2-9f4780015522"), 0, new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 468000000000L, 360000000000L, "Avaliação Clínica Geral", new Guid("e7944276-5214-46c7-2755-08dbede3db7d") },
+                    { new Guid("08dbee49-5c82-d7d1-6fc2-9f4780015523"), 0, new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 396000000000L, 360000000000L, "Consulta de Rotina", new Guid("e7944276-5214-46c7-2755-08dbede3db7d") },
+                    { new Guid("08dbee49-5c82-d7d7-6fc2-9f4780015524"), 0, new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 396000000000L, 324000000000L, "Exame Físico e Diagnóstico", new Guid("e7944276-5214-46c7-2755-08dbede3db7d") },
+                    { new Guid("08dbee49-5c82-d7dc-6fc2-9f4780015525"), 0, new DateTime(2023, 9, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), 576000000000L, 540000000000L, "Discussão de Resultados de Exames", new Guid("e7944276-5214-46c7-2755-08dbede3db7d") },
+                    { new Guid("08dbee49-5c82-d7e1-6fc2-9f4780015526"), 1, new DateTime(2023, 11, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 720000000000L, 504000000000L, "Cirurgia Cardiovascular", new Guid("e7944276-5214-46c7-2755-08dbede3db7d") },
+                    { new Guid("08dbee49-5c82-d7e6-6fc2-9f4780015527"), 0, new DateTime(2023, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 540000000000L, 360000000000L, "Procedimento Ortopédico", new Guid("e7944276-5214-46c7-2755-08dbede3db7d") }
+                });
+
+            migrationBuilder.InsertData(
+                table: "FK_TBDoctorActivity_TBDoctor",
+                columns: new[] { "ActivitiesId", "DoctorsId" },
+                values: new object[,]
+                {
+                    { new Guid("08dbee49-5c82-d7a8-6fc2-9f4780015522"), new Guid("e5263897-c9e6-4234-8425-934e455697dd") },
+                    { new Guid("08dbee49-5c82-d7d1-6fc2-9f4780015523"), new Guid("e5263897-c9e6-4234-8425-934e455697dd") },
+                    { new Guid("08dbee49-5c82-d7d7-6fc2-9f4780015524"), new Guid("93b57152-eebb-45f0-8647-ca582580a93e") },
+                    { new Guid("08dbee49-5c82-d7dc-6fc2-9f4780015525"), new Guid("edadb5a0-2b4b-4913-9d34-51fb0edb2852") },
+                    { new Guid("08dbee49-5c82-d7e1-6fc2-9f4780015526"), new Guid("2093bd03-7aa1-49f9-a44c-11523684212a") },
+                    { new Guid("08dbee49-5c82-d7e1-6fc2-9f4780015526"), new Guid("93b57152-eebb-45f0-8647-ca582580a93e") },
+                    { new Guid("08dbee49-5c82-d7e1-6fc2-9f4780015526"), new Guid("e5263897-c9e6-4234-8425-934e455697dd") },
+                    { new Guid("08dbee49-5c82-d7e1-6fc2-9f4780015526"), new Guid("edadb5a0-2b4b-4913-9d34-51fb0edb2852") },
+                    { new Guid("08dbee49-5c82-d7e6-6fc2-9f4780015527"), new Guid("2093bd03-7aa1-49f9-a44c-11523684212a") },
+                    { new Guid("08dbee49-5c82-d7e6-6fc2-9f4780015527"), new Guid("e5263897-c9e6-4234-8425-934e455697dd") },
+                    { new Guid("08dbee49-5c82-d7e6-6fc2-9f4780015527"), new Guid("edadb5a0-2b4b-4913-9d34-51fb0edb2852") }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -220,32 +311,25 @@ namespace eMedSchedule.Infra.Orm.Migrations
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_TBDoctor_AspNetUsers_UserId",
-                table: "TBDoctor",
-                column: "UserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id");
+            migrationBuilder.CreateIndex(
+                name: "IX_FK_TBDoctorActivity_TBDoctor_DoctorsId",
+                table: "FK_TBDoctorActivity_TBDoctor",
+                column: "DoctorsId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_TBDoctorActivity_AspNetUsers_UserId",
+            migrationBuilder.CreateIndex(
+                name: "IX_TBDoctor_UserId",
+                table: "TBDoctor",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TBDoctorActivity_UserId",
                 table: "TBDoctorActivity",
-                column: "UserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id");
+                column: "UserId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_TBDoctor_AspNetUsers_UserId",
-                table: "TBDoctor");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_TBDoctorActivity_AspNetUsers_UserId",
-                table: "TBDoctorActivity");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -262,26 +346,19 @@ namespace eMedSchedule.Infra.Orm.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "FK_TBDoctorActivity_TBDoctor");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "TBDoctorActivity");
+
+            migrationBuilder.DropTable(
+                name: "TBDoctor");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropIndex(
-                name: "IX_TBDoctorActivity_UserId",
-                table: "TBDoctorActivity");
-
-            migrationBuilder.DropIndex(
-                name: "IX_TBDoctor_UserId",
-                table: "TBDoctor");
-
-            migrationBuilder.DropColumn(
-                name: "UserId",
-                table: "TBDoctorActivity");
-
-            migrationBuilder.DropColumn(
-                name: "UserId",
-                table: "TBDoctor");
         }
     }
 }

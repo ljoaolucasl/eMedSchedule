@@ -1,6 +1,7 @@
 ﻿using eMedSchedule.Domain.DoctorModule;
 using eMedSchedule.Infra.Orm.Common;
 using Microsoft.EntityFrameworkCore;
+using System.Numerics;
 
 namespace eMedSchedule.Infra.Orm.Repositories
 {
@@ -33,7 +34,7 @@ namespace eMedSchedule.Infra.Orm.Repositories
 
         public bool Exist(Doctor objectToCheck)
         {
-            return Data.ToList().Any(d => d.CRM == objectToCheck.CRM);
+            return Data.ToList().Any(d => d.Id != objectToCheck.Id && d.CRM == objectToCheck.CRM);
         }
 
         public List<Doctor> GetListDoctorsMoreHoursWorked(DateTime startDate, DateTime endDate)

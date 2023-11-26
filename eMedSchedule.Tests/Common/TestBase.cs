@@ -21,7 +21,7 @@ namespace eMedSchedule.Tests.Common
             return dbUpdateException;
         }
 
-        public static Guid CadastrarUsuario()
+        public static Guid RegisterUser()
         {
             Guid usuarioId = Guid.Parse("A8BC593B-5945-417B-3C2A-08DBE8775234");
 
@@ -48,11 +48,11 @@ namespace eMedSchedule.Tests.Common
 				VALUES
 				(
 					'{usuarioId}',
-					'CAROLINA RECH',
-					'CAROLINA',
-					'CAROLINA',
-					'CAROLINA@GMAIL.COM',
-					'CAROLINA@GMAIL.COM',
+					'TESTE TESTE',
+					'TESTE@GMAIL.COM',
+					'TESTE@GMAIL.COM',
+					'TESTE@GMAIL.COM',
+					'TESTE@GMAIL.COM',
 					1,
 					'AQAAAAEAACCQAAAAEL/NE00SPXPMU7SRDGSENWX7TKLQNMKI9AEYIDFGYKLGT1V6YFH+QEGZJMF5HVBN8G==',
 					'FSNVOM5DIYV67KMJWQBDDIE3OSR57XTN',
@@ -73,7 +73,7 @@ namespace eMedSchedule.Tests.Common
             return usuarioId;
         }
 
-        public static void DeleteUser()
+        public static void DeleteData()
         {
             var sql = @$"DELETE FROM FK_TBDoctorActivity_TBDoctor;";
 

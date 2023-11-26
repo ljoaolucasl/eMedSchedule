@@ -16,7 +16,10 @@ namespace eMedSchedule.WebApi.Config
         {
             get
             {
-                var claimId = _contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+                Claim claimId = null;
+
+                if (_contextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier) != null)
+                    claimId = _contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
 
                 if (claimId == null)
                     return Guid.Empty;

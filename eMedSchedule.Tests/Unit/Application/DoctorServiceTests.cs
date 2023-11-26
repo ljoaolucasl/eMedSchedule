@@ -1,4 +1,5 @@
 ﻿using eMedSchedule.Application.Services;
+using eMedSchedule.Domain.DoctorActivityModule;
 using eMedSchedule.Domain.DoctorModule;
 using eMedSchedule.Infra.Orm.Common;
 using FizzWare.NBuilder;
@@ -115,27 +116,37 @@ namespace eMedSchedule.Tests.Unit.Application
             _repositoryMoq.Verify(x => x.Delete(doctorToTest), Times.Once());
         }
 
-        //[TestMethod]
-        //public async Task Doctor_Service_Should_Delete_Not_When_The_Doctor_When_Not_Exists()
-        //{
-        //    var doctorToTest = Builder<Doctor>.CreateNew().Build();
+        [TestMethod]
+        public async Task Doctor_Service_Should_Return_Success_When_Doctor_Has_No_Pending_Activity()
+        {
+            var doctorToTest = Builder<Doctor>.CreateNew().Build();
 
-        //    var result = await _service.DeleteAsync(doctorToTest);
+            var doctorActivityToTest = new DoctorActivity("Title2", new List<Doctor>() { doctorToTest }, ActivityTypeEnum.Appointment,
+                new DateTime(2000, 10, 10), new TimeSpan(3, 0, 0), new TimeSpan(5, 0, 0));
 
-        //    result.Should().BeFailure();
-        //    _repositoryMoq.Verify(x => x.Delete(doctorToTest), Times.Never());
-        //}
+            doctorToTest.Activities = new List<DoctorActivity>() { doctorActivityToTest };
 
-        //[TestMethod]
-        //public async Task Doctor_Service_Should_Not_Delete_And_Catching_An_Exception_When_An_Exception_Is_Thrown()
-        //{
-        //    DbUpdateException dbUpdateException = TestBase.CreateDbUpdateException("");
-        //    _repositoryMoq.Setup(x => x.Delete(It.IsAny<Doctor>())).Throws(dbUpdateException);
+            var result = await _service.DeleteAsync(doctorToTest);
 
-        //    var result = await _service.DeleteAsync(Builder<Doctor>.CreateNew().Build());
+            result.Should().BeSuccess();
+            _repositoryMoq.Verify(x => x.Delete(doctorToTest), Times.Once());
+        }
 
-        //    result.Should().BeFailure();
-        //}
+        [TestMethod]
+        public async Task Doctor_Service_Should_Return_Failer_When_Doctor_Has_Pending_Activity()
+        {
+            var doctorToTest = Builder<Doctor>.CreateNew().Build();
+
+            var doctorActivityToTest = new DoctorActivity("Title2", new List<Doctor>() { doctorToTest }, ActivityTypeEnum.Appointment,
+                new DateTime(3000, 10, 10), new TimeSpan(3, 0, 0), new TimeSpan(5, 0, 0));
+
+            doctorToTest.Activities = new List<DoctorActivity>() { doctorActivityToTest };
+
+            var result = await _service.DeleteAsync(doctorToTest);
+
+            result.Should().BeFailure();
+            _repositoryMoq.Verify(x => x.Delete(doctorToTest), Times.Never());
+        }
 
         #endregion DeleteDoctor
     }
