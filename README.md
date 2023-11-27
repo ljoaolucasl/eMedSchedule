@@ -125,6 +125,31 @@ Feel free to explore the various functionalities of the application, including d
 
 # eMedSchedule API Documentation
 
+## Table of Contents
+
+1. [Introduction](#introduction)
+2. [Authentication](#authentication)
+  - [1. Register](#1-register)
+  - [2. Login](#2-login)
+  - [3. Logout](#3-logout)
+3. [Doctor Endpoints](#doctor-endpoints)
+  - [1. Register Doctor](#1-register-doctor)
+  - [2. Update Doctor](#2-update-doctor)
+  - [3. Delete Doctor](#3-delete-doctor)
+  - [4. Get All Doctors](#4-get-all-doctors)
+  - [5. Get Doctor By Id](#5-get-doctor-by-id)
+  - [6. Get Complete Doctor By Id](#6-get-complete-doctor-by-id)
+  - [7. List Doctors Ranking](#7-list-doctors-ranking)
+4. [Activity Endpoints](#activity-endpoints)
+  - [1. Schedule Activity](#1-schedule-activity)
+  - [2. Update Activity Times](#2-update-activity-times)
+  - [3. Delete Activity](#3-delete-activity)
+  - [4. Get All Activities](#4-get-all-activities)
+  - [5. Get Activity By Id](#5-get-activity-by-id)
+  - [6. Get Complete Activity By Id](#6-get-complete-activity-by-id)
+5. [Error Handling](#error-handling)
+6. [Conclusion](#conclusion)
+
 ## Introduction
 
 The eMedSchedule API provides endpoints to manage doctors and their scheduled activities in a medical clinic. This documentation outlines the available endpoints, their input parameters, and expected responses.
@@ -582,4 +607,4 @@ The eMedSchedule API provides comprehensive functionality for managing doctors a
 
 
 ## Developed by
-- [@João Lucas Claudino](https://github.com/ljoaolucasl)
+- [@João Lucas Claudino](https://www.linkedin.com/in/joao-lucas-claudino/)
