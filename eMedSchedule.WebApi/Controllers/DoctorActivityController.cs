@@ -62,7 +62,7 @@ namespace eMedSchedule.WebApi.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(ListDoctorActivityViewModel), 200)]
+        [ProducesResponseType(typeof(ListDoctorActivityViewModel[]), 200)]
         [ProducesResponseType(typeof(string[]), 400)]
         [ProducesResponseType(typeof(string[]), 404)]
         [ProducesResponseType(typeof(string[]), 500)]

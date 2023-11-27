@@ -62,7 +62,7 @@ namespace eMedSchedule.WebApi.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(ListDoctorViewModel), 200)]
+        [ProducesResponseType(typeof(ListDoctorViewModel[]), 200)]
         [ProducesResponseType(typeof(string[]), 400)]
         [ProducesResponseType(typeof(string[]), 404)]
         [ProducesResponseType(typeof(string[]), 500)]
@@ -107,7 +107,7 @@ namespace eMedSchedule.WebApi.Controllers
         }
 
         [HttpGet("worked-hours/{startDate:datetime}={endDate:datetime}")]
-        [ProducesResponseType(typeof(ListWorkedHoursDoctorViewModel), 200)]
+        [ProducesResponseType(typeof(ListWorkedHoursDoctorViewModel[]), 200)]
         [ProducesResponseType(typeof(string[]), 400)]
         [ProducesResponseType(typeof(string[]), 404)]
         [ProducesResponseType(typeof(string[]), 500)]
