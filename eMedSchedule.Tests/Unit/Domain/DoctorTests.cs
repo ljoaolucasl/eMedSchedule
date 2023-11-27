@@ -187,9 +187,9 @@ namespace eMedSchedule.Tests.Unit.Domain
 
             doctorToTest[0].Activities = new List<DoctorActivity>() { _doctorActivity };
 
-            ValidationResult result = _validatorActivity.Validate(doctorActivityToTest);
+            var result = doctorToTest[0].ValidateDoctorSchedule(doctorActivityToTest, null);
 
-            result.IsValid.Should().BeTrue();
+            result.Should().BeTrue();
         }
 
         [TestMethod]
@@ -206,9 +206,9 @@ namespace eMedSchedule.Tests.Unit.Domain
 
             doctorToTest[0].Activities = new List<DoctorActivity>() { _doctorActivity };
 
-            ValidationResult result = _validatorActivity.Validate(doctorActivityToTest);
+            var result = doctorToTest[0].ValidateDoctorSchedule(doctorActivityToTest, null);
 
-            result.IsValid.Should().BeFalse();
+            result.Should().BeFalse();
         }
 
         [TestMethod]
@@ -225,9 +225,9 @@ namespace eMedSchedule.Tests.Unit.Domain
 
             doctorToTest[0].Activities = new List<DoctorActivity>() { _doctorActivity };
 
-            ValidationResult result = _validatorActivity.Validate(doctorActivityToTest);
+            var result = doctorToTest[0].ValidateDoctorSchedule(doctorActivityToTest, null);
 
-            result.IsValid.Should().BeFalse();
+            result.Should().BeFalse();
         }
 
         [TestMethod]
@@ -245,9 +245,9 @@ namespace eMedSchedule.Tests.Unit.Domain
 
             doctorToTest[0].Activities = new List<DoctorActivity>() { _doctorActivity };
 
-            ValidationResult result = _validatorActivity.Validate(doctorActivityToTest);
+            var result = doctorToTest[0].ValidateDoctorSchedule(doctorActivityToTest, null);
 
-            result.IsValid.Should().BeFalse();
+            result.Should().BeFalse();
         }
 
         [TestMethod]
@@ -265,9 +265,9 @@ namespace eMedSchedule.Tests.Unit.Domain
 
             doctorToTest[0].Activities = new List<DoctorActivity>() { _doctorActivity };
 
-            ValidationResult result = _validatorActivity.Validate(doctorActivityToTest);
+            var result = doctorToTest[0].ValidateDoctorSchedule(doctorActivityToTest, null);
 
-            result.IsValid.Should().BeTrue();
+            result.Should().BeTrue();
         }
 
         [TestMethod]
@@ -285,9 +285,9 @@ namespace eMedSchedule.Tests.Unit.Domain
 
             doctorToTest[0].Activities = new List<DoctorActivity>() { _doctorActivity };
 
-            ValidationResult result = _validatorActivity.Validate(doctorActivityToTest);
+            var result = doctorToTest[0].ValidateDoctorSchedule(doctorActivityToTest, null);
 
-            result.IsValid.Should().BeFalse();
+            result.Should().BeFalse();
         }
 
         [TestMethod]
@@ -304,9 +304,9 @@ namespace eMedSchedule.Tests.Unit.Domain
 
             doctorToTest[0].Activities = new List<DoctorActivity>() { _doctorActivity };
 
-            ValidationResult result = _validatorActivity.Validate(doctorActivityToTest);
+            var result = doctorToTest[0].ValidateDoctorSchedule(doctorActivityToTest, null);
 
-            result.IsValid.Should().BeFalse();
+            result.Should().BeFalse();
         }
 
         [TestMethod]
@@ -325,9 +325,9 @@ namespace eMedSchedule.Tests.Unit.Domain
 
             doctorToTest[0].Activities = new List<DoctorActivity>() { _doctorActivity };
 
-            ValidationResult result = _validatorActivity.Validate(doctorActivityToTest);
+            var result = doctorToTest[0].ValidateDoctorSchedule(doctorActivityToTest, null);
 
-            result.IsValid.Should().BeFalse();
+            result.Should().BeFalse();
         }
 
         #endregion ValidateSchedule

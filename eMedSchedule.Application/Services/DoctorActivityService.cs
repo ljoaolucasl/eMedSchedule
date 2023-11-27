@@ -81,6 +81,9 @@ namespace eMedSchedule.Application.Services
 
             var errors = new List<Error>();
 
+            if (obj.Doctors != null && obj.Doctors.Count > 0)
+                obj.Doctors[0].ValidateDoctorSchedule(obj, errors);
+
             foreach (var validationFailure in resultValidation.Errors)
             {
                 Log.Logger.Warning(validationFailure.ErrorMessage);

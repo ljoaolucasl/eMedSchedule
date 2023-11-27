@@ -1,4 +1,5 @@
 ﻿using eMedSchedule.Domain.DoctorActivityModule;
+using FluentResults;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eMedSchedule.Domain.DoctorModule
@@ -49,7 +50,7 @@ namespace eMedSchedule.Domain.DoctorModule
             return true;
         }
 
-        public bool ValidateDoctorSchedule(DoctorActivity activityToValidate)
+        public bool ValidateDoctorSchedule(DoctorActivity activityToValidate, List<Error>? errors)
         {
             var newActivityStart = activityToValidate.Date.Date + activityToValidate.StartTime;
             var newActivityEnd = activityToValidate.Date.Date + activityToValidate.EndTime + activityToValidate.RecoveryTime;
@@ -74,6 +75,8 @@ namespace eMedSchedule.Domain.DoctorModule
 
                 if (!(existingActivityEnd <= newActivityStart || existingActivityStart >= newActivityEnd))
                 {
+                    if (errors != null)
+                        errors.Add(new Error($"Doctor {Name} has a scheduling conflict at this time."));
                     return false;
                 }
             }

@@ -25,8 +25,7 @@ namespace eMedSchedule.Domain.DoctorActivityModule
                 .NotNull().WithMessage("'Date' is required.");
 
             RuleFor(dA => dA)
-                .Must(dA => dA.Doctors != null ? ValidateDoctorsByTypeActivity(dA) : true).WithMessage("An appointment cannot have more than 1 doctor.")
-                .Must(dA => dA.Doctors != null ? dA.Doctors.All(d => d.ValidateDoctorSchedule(dA)) : true).WithMessage("Doctor has a scheduling conflict at this time.");
+                .Must(dA => dA.Doctors != null ? ValidateDoctorsByTypeActivity(dA) : true).WithMessage("An appointment cannot have more than 1 doctor.");
         }
 
         private void ValidateInvalidCharacter(string name, ValidationContext<DoctorActivity> context)
