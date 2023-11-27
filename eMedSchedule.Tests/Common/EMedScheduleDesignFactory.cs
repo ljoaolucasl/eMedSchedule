@@ -16,11 +16,11 @@ namespace eMedSchedule.Tests.Common
                .AddJsonFile("appsettings.json")
                .Build();
 
-            var connectionString = configuration.GetConnectionString("SqlServer");
+            var connectionString = configuration.GetConnectionString("PostgreSql");
 
             var optionsBuilder = new DbContextOptionsBuilder<EMedScheduleContext>();
 
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseNpgsql(connectionString);
 
             return new EMedScheduleContext(optionsBuilder.Options, new TestTenantProvider(userId));
         }

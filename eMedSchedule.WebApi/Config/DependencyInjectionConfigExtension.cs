@@ -15,11 +15,12 @@ namespace eMedSchedule.WebApi.Config
     {
         public static void ConfigureDependencyInjection(this IServiceCollection services, IConfiguration config)
         {
-            var connectionString = config.GetConnectionString("SqlServer");
+            var connectionString = config.GetConnectionString("PostgreSql");
 
             services.AddDbContext<IPersistenceContext, EMedScheduleContext>(optionsBuilder =>
             {
-                optionsBuilder.UseSqlServer(connectionString);
+                optionsBuilder.UseNpgsql(connectionString);
+                AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             });
 
             services.AddTransient<ITenantProvider, ApiTenantProvider>();

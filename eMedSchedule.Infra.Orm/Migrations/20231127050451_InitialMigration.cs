@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace eMedSchedule.Infra.Orm.Migrations
 {
     /// <inheritdoc />
-    public partial class initialMigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,10 +18,10 @@ namespace eMedSchedule.Infra.Orm.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -31,22 +32,22 @@ namespace eMedSchedule.Infra.Orm.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,11 +58,11 @@ namespace eMedSchedule.Infra.Orm.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -78,11 +79,11 @@ namespace eMedSchedule.Infra.Orm.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -99,10 +100,10 @@ namespace eMedSchedule.Infra.Orm.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    ProviderKey = table.Column<string>(type: "text", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -119,8 +120,8 @@ namespace eMedSchedule.Infra.Orm.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -143,10 +144,10 @@ namespace eMedSchedule.Infra.Orm.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -163,11 +164,11 @@ namespace eMedSchedule.Infra.Orm.Migrations
                 name: "TBDoctor",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "varchar(100)", nullable: false),
                     CRM = table.Column<string>(type: "varchar(100)", nullable: false),
-                    ProfilePicture = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ProfilePicture = table.Column<byte[]>(type: "bytea", nullable: true),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -183,13 +184,13 @@ namespace eMedSchedule.Infra.Orm.Migrations
                 name: "TBDoctorActivity",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Title = table.Column<string>(type: "varchar(100)", nullable: false),
-                    ActivityType = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StartTime = table.Column<long>(type: "bigint", nullable: false),
-                    EndTime = table.Column<long>(type: "bigint", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ActivityType = table.Column<int>(type: "integer", nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamptz", nullable: false),
+                    StartTime = table.Column<TimeSpan>(type: "interval", nullable: false),
+                    EndTime = table.Column<TimeSpan>(type: "interval", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -205,8 +206,8 @@ namespace eMedSchedule.Infra.Orm.Migrations
                 name: "FK_TBDoctorActivity_TBDoctor",
                 columns: table => new
                 {
-                    ActivitiesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DoctorsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ActivitiesId = table.Column<Guid>(type: "uuid", nullable: false),
+                    DoctorsId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -246,12 +247,12 @@ namespace eMedSchedule.Infra.Orm.Migrations
                 columns: new[] { "Id", "ActivityType", "Date", "EndTime", "StartTime", "Title", "UserId" },
                 values: new object[,]
                 {
-                    { new Guid("08dbee49-5c82-d7a8-6fc2-9f4780015522"), 0, new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 468000000000L, 360000000000L, "Avaliação Clínica Geral", new Guid("e7944276-5214-46c7-2755-08dbede3db7d") },
-                    { new Guid("08dbee49-5c82-d7d1-6fc2-9f4780015523"), 0, new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 396000000000L, 360000000000L, "Consulta de Rotina", new Guid("e7944276-5214-46c7-2755-08dbede3db7d") },
-                    { new Guid("08dbee49-5c82-d7d7-6fc2-9f4780015524"), 0, new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 396000000000L, 324000000000L, "Exame Físico e Diagnóstico", new Guid("e7944276-5214-46c7-2755-08dbede3db7d") },
-                    { new Guid("08dbee49-5c82-d7dc-6fc2-9f4780015525"), 0, new DateTime(2023, 9, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), 576000000000L, 540000000000L, "Discussão de Resultados de Exames", new Guid("e7944276-5214-46c7-2755-08dbede3db7d") },
-                    { new Guid("08dbee49-5c82-d7e1-6fc2-9f4780015526"), 1, new DateTime(2023, 11, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 720000000000L, 504000000000L, "Cirurgia Cardiovascular", new Guid("e7944276-5214-46c7-2755-08dbede3db7d") },
-                    { new Guid("08dbee49-5c82-d7e6-6fc2-9f4780015527"), 0, new DateTime(2023, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 540000000000L, 360000000000L, "Procedimento Ortopédico", new Guid("e7944276-5214-46c7-2755-08dbede3db7d") }
+                    { new Guid("08dbef06-62fb-12ce-6fc2-9f14e00503c6"), 0, new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 13, 0, 0, 0), new TimeSpan(0, 10, 0, 0, 0), "Avaliação Clínica Geral", new Guid("e7944276-5214-46c7-2755-08dbede3db7d") },
+                    { new Guid("08dbef06-62fb-12e8-6fc2-9f14e00503c7"), 0, new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 11, 0, 0, 0), new TimeSpan(0, 10, 0, 0, 0), "Consulta de Rotina", new Guid("e7944276-5214-46c7-2755-08dbede3db7d") },
+                    { new Guid("08dbef06-62fb-12ed-6fc2-9f14e00503c8"), 0, new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 11, 0, 0, 0), new TimeSpan(0, 9, 0, 0, 0), "Exame Físico e Diagnóstico", new Guid("e7944276-5214-46c7-2755-08dbede3db7d") },
+                    { new Guid("08dbef06-62fb-12f1-6fc2-9f14e00503c9"), 0, new DateTime(2023, 9, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 16, 0, 0, 0), new TimeSpan(0, 15, 0, 0, 0), "Discussão de Resultados de Exames", new Guid("e7944276-5214-46c7-2755-08dbede3db7d") },
+                    { new Guid("08dbef06-62fb-12f4-6fc2-9f14e00503ca"), 1, new DateTime(2023, 11, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 20, 0, 0, 0), new TimeSpan(0, 14, 0, 0, 0), "Cirurgia Cardiovascular", new Guid("e7944276-5214-46c7-2755-08dbede3db7d") },
+                    { new Guid("08dbef06-62fb-12f8-6fc2-9f14e00503cb"), 0, new DateTime(2023, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 15, 0, 0, 0), new TimeSpan(0, 10, 0, 0, 0), "Procedimento Ortopédico", new Guid("e7944276-5214-46c7-2755-08dbede3db7d") }
                 });
 
             migrationBuilder.InsertData(
@@ -259,17 +260,17 @@ namespace eMedSchedule.Infra.Orm.Migrations
                 columns: new[] { "ActivitiesId", "DoctorsId" },
                 values: new object[,]
                 {
-                    { new Guid("08dbee49-5c82-d7a8-6fc2-9f4780015522"), new Guid("e5263897-c9e6-4234-8425-934e455697dd") },
-                    { new Guid("08dbee49-5c82-d7d1-6fc2-9f4780015523"), new Guid("e5263897-c9e6-4234-8425-934e455697dd") },
-                    { new Guid("08dbee49-5c82-d7d7-6fc2-9f4780015524"), new Guid("93b57152-eebb-45f0-8647-ca582580a93e") },
-                    { new Guid("08dbee49-5c82-d7dc-6fc2-9f4780015525"), new Guid("edadb5a0-2b4b-4913-9d34-51fb0edb2852") },
-                    { new Guid("08dbee49-5c82-d7e1-6fc2-9f4780015526"), new Guid("2093bd03-7aa1-49f9-a44c-11523684212a") },
-                    { new Guid("08dbee49-5c82-d7e1-6fc2-9f4780015526"), new Guid("93b57152-eebb-45f0-8647-ca582580a93e") },
-                    { new Guid("08dbee49-5c82-d7e1-6fc2-9f4780015526"), new Guid("e5263897-c9e6-4234-8425-934e455697dd") },
-                    { new Guid("08dbee49-5c82-d7e1-6fc2-9f4780015526"), new Guid("edadb5a0-2b4b-4913-9d34-51fb0edb2852") },
-                    { new Guid("08dbee49-5c82-d7e6-6fc2-9f4780015527"), new Guid("2093bd03-7aa1-49f9-a44c-11523684212a") },
-                    { new Guid("08dbee49-5c82-d7e6-6fc2-9f4780015527"), new Guid("e5263897-c9e6-4234-8425-934e455697dd") },
-                    { new Guid("08dbee49-5c82-d7e6-6fc2-9f4780015527"), new Guid("edadb5a0-2b4b-4913-9d34-51fb0edb2852") }
+                    { new Guid("08dbef06-62fb-12ce-6fc2-9f14e00503c6"), new Guid("e5263897-c9e6-4234-8425-934e455697dd") },
+                    { new Guid("08dbef06-62fb-12e8-6fc2-9f14e00503c7"), new Guid("e5263897-c9e6-4234-8425-934e455697dd") },
+                    { new Guid("08dbef06-62fb-12ed-6fc2-9f14e00503c8"), new Guid("93b57152-eebb-45f0-8647-ca582580a93e") },
+                    { new Guid("08dbef06-62fb-12f1-6fc2-9f14e00503c9"), new Guid("edadb5a0-2b4b-4913-9d34-51fb0edb2852") },
+                    { new Guid("08dbef06-62fb-12f4-6fc2-9f14e00503ca"), new Guid("2093bd03-7aa1-49f9-a44c-11523684212a") },
+                    { new Guid("08dbef06-62fb-12f4-6fc2-9f14e00503ca"), new Guid("93b57152-eebb-45f0-8647-ca582580a93e") },
+                    { new Guid("08dbef06-62fb-12f4-6fc2-9f14e00503ca"), new Guid("e5263897-c9e6-4234-8425-934e455697dd") },
+                    { new Guid("08dbef06-62fb-12f4-6fc2-9f14e00503ca"), new Guid("edadb5a0-2b4b-4913-9d34-51fb0edb2852") },
+                    { new Guid("08dbef06-62fb-12f8-6fc2-9f14e00503cb"), new Guid("2093bd03-7aa1-49f9-a44c-11523684212a") },
+                    { new Guid("08dbef06-62fb-12f8-6fc2-9f14e00503cb"), new Guid("e5263897-c9e6-4234-8425-934e455697dd") },
+                    { new Guid("08dbef06-62fb-12f8-6fc2-9f14e00503cb"), new Guid("edadb5a0-2b4b-4913-9d34-51fb0edb2852") }
                 });
 
             migrationBuilder.CreateIndex(
@@ -281,8 +282,7 @@ namespace eMedSchedule.Infra.Orm.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -308,8 +308,7 @@ namespace eMedSchedule.Infra.Orm.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_FK_TBDoctorActivity_TBDoctor_DoctorsId",
