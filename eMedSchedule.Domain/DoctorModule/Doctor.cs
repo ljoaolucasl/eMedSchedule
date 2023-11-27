@@ -61,6 +61,9 @@ namespace eMedSchedule.Domain.DoctorModule
 
             foreach (var existingActivity in Activities)
             {
+                if (existingActivity.Equals(activityToValidate))
+                    continue;
+
                 var existingActivityStart = existingActivity.Date.Date + existingActivity.StartTime;
                 var existingActivityEnd = existingActivity.Date.Date + existingActivity.EndTime + existingActivity.RecoveryTime;
 
