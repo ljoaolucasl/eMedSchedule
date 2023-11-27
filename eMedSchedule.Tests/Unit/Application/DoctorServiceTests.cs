@@ -3,6 +3,7 @@ using eMedSchedule.Domain.DoctorActivityModule;
 using eMedSchedule.Domain.DoctorModule;
 using eMedSchedule.Infra.Orm.Common;
 using FizzWare.NBuilder;
+using FluentResults;
 using FluentResults.Extensions.FluentAssertions;
 using Moq;
 
@@ -149,5 +150,25 @@ namespace eMedSchedule.Tests.Unit.Application
         }
 
         #endregion DeleteDoctor
+
+        [TestMethod]
+        public void Doctor_Service_Should_Return_Failer_When_The_Doctor_Schedule_Surgery_Has_A_Conflict()
+        {
+            var doctorToTest = new List<Doctor>() { new Doctor("Carlos", "84526-SC", new byte[12]) };
+
+            var doctorActivity = new DoctorActivity("Title2", doctorToTest, ActivityTypeEnum.Surgery,
+                new DateTime(2020, 10, 10), new TimeSpan(6, 0, 0), new TimeSpan(10, 0, 0));
+
+            var doctorActivityToTest = new DoctorActivity("Title2", doctorToTest, ActivityTypeEnum.Surgery,
+                new DateTime(2020, 10, 10), new TimeSpan(6, 0, 0), new TimeSpan(10, 0, 0));
+
+            doctorToTest[0].Activities = new List<DoctorActivity>() { doctorActivity };
+
+            List<Error> errors = new List<Error>();
+
+            var result = doctorToTest[0].ValidateDoctorSchedule(doctorActivityToTest, errors);
+
+            errors[0].Message.Should().Be($"Doctor {doctorToTest[0].Name} has a scheduling conflict at this time.");
+        }
     }
 }
